@@ -3,7 +3,7 @@ import ibm_db
 class MovieApp:
     def __init__(self, host, port, database, user, password):
         try:
-            self.connection = ibm_db_dbi.connect("cs348", "", "")
+            self.connection = ibm_db.connect("cs348", "", "")
             print("Database connection open.\n")
         except Exception as e:
             print(f"Error while connecting to DB2: {e}")
