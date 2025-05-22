@@ -1,1 +1,1 @@
-import from movies.txt of del insert into movies;
+import FROM movies.txt OF del modified by coldel';' INSERT INTO movies;
