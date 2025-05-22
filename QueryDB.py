@@ -1,26 +1,32 @@
-import mysql.connector
-from mysql.connector import Error
+import ibm_db_dbi
 
 class MovieApp:
-    def __init__(self, host, database, user, password):
+    def __init__(self, host, port, database, user, password):
         try:
-            self.connection = mysql.connector.connect(
-                host=host,
-                database=database,
-                user=user,
-                password=password
+            conn_str = (
+                f"DATABASE={database};"
+                f"HOSTNAME={host};"
+                f"PORT={port};"
+                f"PROTOCOL=TCPIP;"
+                f"UID={user};"
+                f"PWD={password};"
             )
-            if self.connection.is_connected():
-                print("Database connection open.\n")
-        except Error as e:
-            print(f"Error while connecting to MySQL: {e}")
+            self.connection = ibm_db_dbi.connect(conn_str, "", "")
+            print("Database connection open.\n")
+        except Exception as e:
+            print(f"Error while connecting to DB2: {e}")
+            self.connection = None
 
     def close(self):
-        if self.connection.is_connected():
+        if self.connection:
             self.connection.close()
             print("Database connection closed.")
 
     def main_menu(self):
+        if not self.connection:
+            print("No database connection.")
+            return
+
         while True:
             print("\n-- Actions --")
             print("Select an option: \n"
@@ -49,7 +55,7 @@ class MovieApp:
                 print("Invalid action.")
 
     def list_top_movies(self):
-        query = "SELECT imdb_id, title, rating FROM Movies ORDER BY rating DESC LIMIT 10;"
+        query = "SELECT imdb_id, title, rating FROM movies ORDER BY rating DESC FETCH FIRST 10 ROWS ONLY"
         cursor = self.connection.cursor()
         cursor.execute(query)
         print("\n**Start of Answer**")
@@ -59,7 +65,7 @@ class MovieApp:
         cursor.close()
 
     def search_by_genre(self, genre):
-        query = "SELECT imdb_id, title, genre FROM Movies WHERE genre LIKE %s;"
+        query = "SELECT imdb_id, title, genre FROM movies WHERE genre LIKE ?"
         cursor = self.connection.cursor()
         like_pattern = f"%{genre}%"
         cursor.execute(query, (like_pattern,))
@@ -74,7 +80,7 @@ class MovieApp:
         cursor.close()
 
     def get_movies_by_year(self, year):
-        query = "SELECT imdb_id, title FROM Movies WHERE year = %s;"
+        query = "SELECT imdb_id, title FROM movies WHERE year = ?"
         cursor = self.connection.cursor()
         cursor.execute(query, (year,))
         print("\n**Start of Answer**")
@@ -89,11 +95,12 @@ class MovieApp:
 
 if __name__ == "__main__":
     HOST = "localhost"
+    PORT = 50000  # change to your DB2 port
     DATABASE = "movie_db"
     USER = "your_username"
     PASSWORD = "your_password"
 
-    app = MovieApp(HOST, DATABASE, USER, PASSWORD)
+    app = MovieApp(HOST, PORT, DATABASE, USER, PASSWORD)
     try:
         app.main_menu()
     finally:
