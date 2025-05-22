@@ -1,4 +1,4 @@
-import ibm_db
+import ibm_db_dbi
 
 class MovieApp:
     def __init__(self, host, port, database, user, password):
@@ -95,7 +95,7 @@ class MovieApp:
 
 if __name__ == "__main__":
     HOST = "localhost"
-    PORT = 50000  # change to your DB2 port
+    PORT = 50000
     DATABASE = "movie_db"
     USER = "your_username"
     PASSWORD = "your_password"
