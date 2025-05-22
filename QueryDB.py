@@ -1,4 +1,4 @@
-import ibm_db_dbi
+import ibm_db
 
 class MovieApp:
     def __init__(self, host, port, database, user, password):
