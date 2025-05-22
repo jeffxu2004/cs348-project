@@ -1,4 +1,4 @@
-CREATE TABLE Movies (
+CREATE TABLE movies (
     imdb_id VARCHAR(20) NOT NULL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     genre VARCHAR(255),
