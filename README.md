@@ -4,3 +4,11 @@
 2. git clone this repo
 3. run createtables.sql
 4. run populatetables.sql
+
+
+To run QueryDB.py
+
+```python -m venv myenv
+source myenv/bin/activate
+pip install ibm_db
+python QueryDB.py```
