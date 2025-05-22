@@ -93,6 +93,7 @@ class MovieApp:
         print("**End of Answer**")
         cursor.close()
 
+
 if __name__ == "__main__":
     HOST = "localhost"
     PORT = 50000
