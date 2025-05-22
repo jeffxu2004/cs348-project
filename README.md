@@ -1,4 +1,7 @@
 # cs348-project
 
-Connect to school servers:
-``connect to CS348;``
+1. ssh into and set up the student env and ``connect to CS348;``
+2. git clone this repo
+3. run createtables.sql
+4. run populatetables.sql
+5. run test.sh
