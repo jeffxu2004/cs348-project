@@ -4,4 +4,3 @@
 2. git clone this repo
 3. run createtables.sql
 4. run populatetables.sql
-5. run test.sh
