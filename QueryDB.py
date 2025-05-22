@@ -88,7 +88,6 @@ class MovieApp:
         cursor.close()
 
 if __name__ == "__main__":
-    # Replace with your own MySQL connection info
     HOST = "localhost"
     DATABASE = "movie_db"
     USER = "your_username"
