@@ -11,7 +11,7 @@ class MovieApp:
 
     def close(self):
         if self.connection:
-            self.connection.close()
+            ibm_db.close(self.connection)
             print("Database connection closed.")
 
     def main_menu(self):
@@ -48,42 +48,46 @@ class MovieApp:
 
     def list_top_movies(self):
         query = "SELECT imdb_id, title, rating FROM movies ORDER BY rating DESC FETCH FIRST 10 ROWS ONLY"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
+        stmt = ibm_db.exec_immediate(self.connection, query)
         print("\n**Start of Answer**")
-        for (imdb_id, title, rating) in cursor:
-            print(f"{title} ({imdb_id}) - Rating: {rating}")
+        row = ibm_db.fetch_assoc(stmt)
+        while row:
+            print(f"{row['TITLE']} ({row['IMDB_ID']}) - Rating: {row['RATING']}")
+            row = ibm_db.fetch_assoc(stmt)
         print("**End of Answer**")
-        cursor.close()
 
     def search_by_genre(self, genre):
         query = "SELECT imdb_id, title, genre FROM movies WHERE genre LIKE ?"
-        cursor = self.connection.cursor()
-        like_pattern = f"%{genre}%"
-        cursor.execute(query, (like_pattern,))
+        stmt = ibm_db.prepare(self.connection, query)
+        pattern = f"%{genre}%"
+        ibm_db.bind_param(stmt, 1, pattern)
+        ibm_db.execute(stmt)
         print("\n**Start of Answer**")
         found = False
-        for (imdb_id, title, genres) in cursor:
-            print(f"{title} ({imdb_id}) - Genres: {genres}")
+        row = ibm_db.fetch_assoc(stmt)
+        while row:
+            print(f"{row['TITLE']} ({row['IMDB_ID']}) - Genres: {row['GENRE']}")
             found = True
+            row = ibm_db.fetch_assoc(stmt)
         if not found:
             print("No movies found for that genre.")
         print("**End of Answer**")
-        cursor.close()
 
     def get_movies_by_year(self, year):
         query = "SELECT imdb_id, title FROM movies WHERE year = ?"
-        cursor = self.connection.cursor()
-        cursor.execute(query, (year,))
+        stmt = ibm_db.prepare(self.connection, query)
+        ibm_db.bind_param(stmt, 1, year)
+        ibm_db.execute(stmt)
         print("\n**Start of Answer**")
         found = False
-        for (imdb_id, title) in cursor:
-            print(f"{title} ({imdb_id})")
+        row = ibm_db.fetch_assoc(stmt)
+        while row:
+            print(f"{row['TITLE']} ({row['IMDB_ID']})")
             found = True
+            row = ibm_db.fetch_assoc(stmt)
         if not found:
             print(f"No movies found from the year {year}.")
         print("**End of Answer**")
-        cursor.close()
 
 
 if __name__ == "__main__":
