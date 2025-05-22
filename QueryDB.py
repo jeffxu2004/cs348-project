@@ -1,17 +1,9 @@
-import ibm_db_dbi
+import ibm_db
 
 class MovieApp:
     def __init__(self, host, port, database, user, password):
         try:
-            conn_str = (
-                f"DATABASE={database};"
-                f"HOSTNAME={host};"
-                f"PORT={port};"
-                f"PROTOCOL=TCPIP;"
-                f"UID={user};"
-                f"PWD={password};"
-            )
-            self.connection = ibm_db_dbi.connect(conn_str, "", "")
+            self.connection = ibm_db_dbi.connect("cs348", "", "")
             print("Database connection open.\n")
         except Exception as e:
             print(f"Error while connecting to DB2: {e}")
