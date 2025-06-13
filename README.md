@@ -16,8 +16,11 @@ python QueryDB.py
 ```
 
 frontend:
-``
+```
 cd app
 npm i
 npm run dev
 ```
+
+to have ssh forward the port, do
+`ssh -L 5173:local_host:5173 username@server.whatever`
