@@ -14,3 +14,10 @@ source myenv/bin/activate
 pip install ibm_db
 python QueryDB.py
 ```
+
+frontend:
+``
+cd app
+npm i
+npm run dev
+```
