@@ -13,3 +13,4 @@ python -m venv myenv
 source myenv/bin/activate
 pip install ibm_db
 python QueryDB.py
+```
