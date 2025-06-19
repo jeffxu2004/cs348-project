@@ -37,3 +37,9 @@ u4      tt0167260
 a11     tt0468569
 u2      tt0468569
 u7      tt0468569
+
+
+-- SELECTION FOR a specific user
+
+tconst  primary_title   release_year    average_rating
+tt0468569       The Dark Knight 2008    9
