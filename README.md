@@ -3,6 +3,19 @@
 This repo contains the files created by our group for the 
 CS 348 project. Below are the instructions to run the code locally
 
+# Install and Set Up MariaDB
+```
+[https://mariadb.com/downloads/?utm_source=header&utm_medium=website](https://mariadb.com/)
+```
+Install MariaDB and then follow the instructions to set up
+
+Run the following to set up an admin user
+```
+mariadb -u root -p
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pass';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
 
 ## Clone the repo
 
