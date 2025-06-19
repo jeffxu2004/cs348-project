@@ -10,11 +10,11 @@ https://mariadb.com/
 Install MariaDB and then follow the instructions to set up
 
 OPTIONAL: Run the following to set up an admin user
-```
+```bash
 mariadb -u root -p
 ```
 
-```
+```bash
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pass';
 GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
@@ -22,7 +22,7 @@ FLUSH PRIVILEGES;
 
 ## Clone the repo
 
-```bash
+```
 git clone https://github.com/jeffxu2004/cs348-project.git
 ```
 
@@ -64,7 +64,7 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Open a new terminal window in the project directory.
     Run the following commands.
 
-    ```
+    ```bash
     cd frontend
     npm install
     npm run dev
