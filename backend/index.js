@@ -45,13 +45,13 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         credentials: true,
     });
 
-    // sanity check route
+    // sanity check route - UPDATED for new schema
     fastify.get("/", async function (request, reply) {
-        const [rows] = await db.query("SELECT * FROM titles LIMIT 5");
+        const [rows] = await db.query("SELECT * FROM title LIMIT 5");
         reply.send(rows);
     });
 
-    // Login endpoint
+    // Login endpoint - UPDATED for new schema
     fastify.post("/login", async (request, reply) => {
         const { username, password } = request.body;
 
@@ -61,7 +61,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
 
         try {
             const [rows] = await db.execute(
-                "SELECT userid, username, password, is_admin FROM users WHERE username = ?",
+                "SELECT userid, username, password, isAdmin FROM user WHERE username = ?",
                 [username]
             );
 
@@ -82,7 +82,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
                 { 
                     userid: user.userid, 
                     username: user.username,
-                    is_admin: user.is_admin 
+                    isAdmin: user.isAdmin 
                 },
                 JWT_SECRET,
                 { expiresIn: '24h' }
@@ -101,7 +101,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
                 user: {
                     userid: user.userid,
                     username: user.username,
-                    is_admin: user.is_admin
+                    isAdmin: user.isAdmin
                 }
             };
         } catch (err) {
@@ -121,16 +121,15 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         return { user: request.user };
     });
 
-    // Get user's favorites (protected route)
+    // Get user's favorites (protected route) - UPDATED for new schema
     fastify.get("/favorites", { preHandler: verifyToken }, async (request, reply) => {
         try {
             const [rows] = await db.execute(`
-                SELECT t.tid, t.primaryTitle, t.startYear, r.averageRating 
+                SELECT t.tconst, t.primary_title, t.release_year, t.average_rating 
                 FROM favorites f
-                JOIN titles t ON f.tid = t.tid
-                LEFT JOIN ratings r ON t.tid = r.tid
+                JOIN title t ON f.tconst = t.tconst
                 WHERE f.userid = ?
-                ORDER BY t.primaryTitle
+                ORDER BY t.primary_title
             `, [request.user.userid]);
             
             return rows;
@@ -140,19 +139,19 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // Add to favorites (protected route)
+    // Add to favorites (protected route) - UPDATED for new schema
     fastify.post("/favorites", { preHandler: verifyToken }, async (request, reply) => {
-        const { tid } = request.body;
+        const { tconst } = request.body;
 
-        if (!tid) {
+        if (!tconst) {
             return reply.code(400).send({ error: "Movie ID required" });
         }
 
         try {
             // Check if already in favorites
             const [existing] = await db.execute(
-                "SELECT * FROM favorites WHERE tid = ? AND userid = ?",
-                [tid, request.user.userid]
+                "SELECT * FROM favorites WHERE tconst = ? AND userid = ?",
+                [tconst, request.user.userid]
             );
 
             if (existing.length > 0) {
@@ -160,8 +159,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
             }
 
             await db.execute(
-                "INSERT INTO favorites (tid, userid) VALUES (?, ?)",
-                [tid, request.user.userid]
+                "INSERT INTO favorites (userid, tconst) VALUES (?, ?)",
+                [request.user.userid, tconst]
             );
 
             return { success: true, message: "Added to favorites" };
@@ -171,14 +170,14 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // Remove from favorites (protected route)
-    fastify.delete("/favorites/:tid", { preHandler: verifyToken }, async (request, reply) => {
-        const { tid } = request.params;
+    // Remove from favorites (protected route) - UPDATED for new schema
+    fastify.delete("/favorites/:tconst", { preHandler: verifyToken }, async (request, reply) => {
+        const { tconst } = request.params;
 
         try {
             const [result] = await db.execute(
-                "DELETE FROM favorites WHERE tid = ? AND userid = ?",
-                [tid, request.user.userid]
+                "DELETE FROM favorites WHERE tconst = ? AND userid = ?",
+                [tconst, request.user.userid]
             );
 
             if (result.affectedRows === 0) {
@@ -192,7 +191,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // search API (keep existing)
+    // search API - UPDATED for new schema
     fastify.get("/search", async (request, reply) => {
         const { q } = request.query;
 
@@ -202,13 +201,135 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
 
         try {
             const [rows] = await db.execute(
-                "SELECT tid, primaryTitle, startYear FROM titles WHERE primaryTitle LIKE ? LIMIT 20",
+                "SELECT tconst, primary_title, release_year FROM title WHERE primary_title LIKE ? LIMIT 20",
                 [`%${q}%`]
             );
             return rows;
         } catch (err) {
             fastify.log.error(err);
             return reply.code(500).send({ error: "Database query failed" });
+        }
+    });
+
+    // NEW: Get movie details with cast and crew
+    fastify.get("/movie/:tconst", async (request, reply) => {
+        const { tconst } = request.params;
+
+        try {
+            // Get movie basic info
+            const [movieRows] = await db.execute(
+                "SELECT * FROM title WHERE tconst = ?",
+                [tconst]
+            );
+
+            if (movieRows.length === 0) {
+                return reply.code(404).send({ error: "Movie not found" });
+            }
+
+            const movie = movieRows[0];
+
+            // Get genres
+            const [genreRows] = await db.execute(
+                "SELECT genres FROM genres WHERE tconst = ?",
+                [tconst]
+            );
+
+            // Get directors
+            const [directorRows] = await db.execute(`
+                SELECT p.name 
+                FROM director d 
+                JOIN people p ON d.nconst = p.nconst 
+                WHERE d.tconst = ?
+            `, [tconst]);
+
+            // Get writers
+            const [writerRows] = await db.execute(`
+                SELECT p.name 
+                FROM writer w 
+                JOIN people p ON w.nconst = p.nconst 
+                WHERE w.tconst = ?
+            `, [tconst]);
+
+            // Get cast
+            const [castRows] = await db.execute(`
+                SELECT p.name, pr.character 
+                FROM principal pr 
+                JOIN people p ON pr.nconst = p.nconst 
+                WHERE pr.tconst = ? AND pr.category IN ('actor', 'actress')
+                ORDER BY pr.character
+            `, [tconst]);
+
+            return {
+                ...movie,
+                genres: genreRows.map(g => g.genres),
+                directors: directorRows.map(d => d.name),
+                writers: writerRows.map(w => w.name),
+                cast: castRows
+            };
+        } catch (err) {
+            fastify.log.error(err);
+            return reply.code(500).send({ error: "Failed to fetch movie details" });
+        }
+    });
+
+    // NEW: Get movies with filters
+    fastify.get("/movies", async (request, reply) => {
+        const { 
+            limit = 20, 
+            offset = 0, 
+            genre, 
+            year, 
+            minRating, 
+            sortBy = 'average_rating',
+            sortOrder = 'DESC' 
+        } = request.query;
+
+        try {
+            let query = "SELECT t.* FROM title t";
+            let whereConditions = [];
+            let params = [];
+
+            // Add genre filter if specified
+            if (genre) {
+                query += " JOIN genres g ON t.tconst = g.tconst";
+                whereConditions.push("g.genres = ?");
+                params.push(genre);
+            }
+
+            // Add year filter
+            if (year) {
+                whereConditions.push("t.release_year = ?");
+                params.push(year);
+            }
+
+            // Add minimum rating filter
+            if (minRating) {
+                whereConditions.push("t.average_rating >= ?");
+                params.push(minRating);
+            }
+
+            // Add WHERE clause if we have conditions
+            if (whereConditions.length > 0) {
+                query += " WHERE " + whereConditions.join(" AND ");
+            }
+
+            // Add sorting
+            const validSortFields = ['primary_title', 'release_year', 'average_rating', 'numvotes'];
+            const validSortOrders = ['ASC', 'DESC'];
+            
+            if (validSortFields.includes(sortBy) && validSortOrders.includes(sortOrder.toUpperCase())) {
+                query += ` ORDER BY t.${sortBy} ${sortOrder.toUpperCase()}`;
+            }
+
+            // Add pagination
+            query += " LIMIT ? OFFSET ?";
+            params.push(parseInt(limit), parseInt(offset));
+
+            const [rows] = await db.execute(query, params);
+            return rows;
+        } catch (err) {
+            fastify.log.error(err);
+            return reply.code(500).send({ error: "Failed to fetch movies" });
         }
     });
 

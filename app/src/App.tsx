@@ -210,7 +210,7 @@ const Header = () => {
         
         <div className="flex items-center space-x-4">
           <span className="text-blue-100">Welcome, {user?.username}!</span>
-          {user?.is_admin && (
+          {user?.isAdmin && (
             <span className="bg-yellow-500 text-yellow-900 px-2 py-1 rounded text-xs font-medium">
               Admin
             </span>
@@ -240,23 +240,22 @@ const MovieDashboard = () => {
     loadFavorites();
   }, []);
 
-const loadFavorites = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/favorites', {
-      credentials: 'include'
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log('🖥  fetched favorites:', data);
-      setFavorites(data);
-    } else {
-      console.warn('❌ favorites fetch failed:', response.status);
+  const loadFavorites = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/favorites', {
+        credentials: 'include'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('🖥  fetched favorites:', data);
+        setFavorites(data);
+      } else {
+        console.warn('❌ favorites fetch failed:', response.status);
+      }
+    } catch (error) {
+      console.error('🔥 loadFavorites error:', error);
     }
-  } catch (error) {
-    console.error('🔥 loadFavorites error:', error);
-  }
-};
-
+  };
 
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
@@ -278,9 +277,9 @@ const loadFavorites = async () => {
     setLoading(false);
   };
 
-  const toggleFavorite = async (tid) => {
-    const isFav = favorites.some((m) => m.tid === tid);
-    const url = `http://localhost:3000/favorites${isFav ? '/' + tid : ''}`;
+  const toggleFavorite = async (tconst) => {
+    const isFav = favorites.some((m) => m.tconst === tconst);
+    const url = `http://localhost:3000/favorites${isFav ? '/' + tconst : ''}`;
     const method = isFav ? 'DELETE' : 'POST';
 
     try {
@@ -288,7 +287,7 @@ const loadFavorites = async () => {
         method,
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: isFav ? null : JSON.stringify({ tid }),
+        body: isFav ? null : JSON.stringify({ tconst }),
       });
 
       if (response.ok) {
@@ -305,30 +304,6 @@ const loadFavorites = async () => {
       <Header />
       
       <div className="container mx-auto p-6">
-        {/* --- 2) Favorites Section at top --- */}
-        {/* <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Favorites</h2>
-          {favorites.length === 0 ? (
-            <p className="text-gray-600">No favorites yet. Click the ♥ on any movie below!</p>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {favorites.map((movie) => (
-                <div key={movie.tid} className="relative border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-800 mb-2">{movie.primaryTitle}</h4>
-                  <p className="text-gray-600 mb-2">Year: {movie.startYear}</p>
-                  <button
-                    onClick={() => toggleFavorite(movie.tid)}
-                    className="absolute top-3 right-3"
-                  >
-                    <Heart className="w-5 h-5 text-red-500" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div> */}
-
-
         {/* Search Section */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Search Movies</h2>
@@ -358,27 +333,27 @@ const loadFavorites = async () => {
               <h3 className="text-lg font-semibold text-gray-700 mb-3">Search Results</h3>
               <div className="grid gap-4">
                 {searchResults.map((movie) => (
-                  <div key={movie.tid} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
+                  <div key={movie.tconst} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
                     <div>
-                      <h4 className="font-medium text-gray-800">{movie.primaryTitle}</h4>
-                      <p className="text-gray-600">{movie.startYear}</p>
+                      <h4 className="font-medium text-gray-800">{movie.primary_title}</h4>
+                      <p className="text-gray-600">{movie.release_year}</p>
                     </div>
                     <button
-                      onClick={() => toggleFavorite(movie.tid)}
+                      onClick={() => toggleFavorite(movie.tconst)}
                       className="flex items-center space-x-2 bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-colors"
                     >
-                    <Heart
-                      className={`w-4 h-4 ${
-                        favorites.some((m) => m.tid === movie.tid)
-                          ? 'text-yellow-300'
-                          : 'text-white'
-                      }`}
-                    />
-                    <span>
-                      {favorites.some((m) => m.tid === movie.tid)
-                        ? 'Remove'
-                        : 'Add'}
-                    </span>
+                      <Heart
+                        className={`w-4 h-4 ${
+                          favorites.some((m) => m.tconst === movie.tconst)
+                            ? 'text-yellow-300'
+                            : 'text-white'
+                        }`}
+                      />
+                      <span>
+                        {favorites.some((m) => m.tconst === movie.tconst)
+                          ? 'Remove'
+                          : 'Add'}
+                      </span>
                     </button>
                   </div>
                 ))}
@@ -395,11 +370,11 @@ const loadFavorites = async () => {
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {favorites.map((movie) => (
-                <div key={movie.tid} className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-800">{movie.primaryTitle}</h4>
-                  <p className="text-gray-600">Year: {movie.startYear}</p>
-                  {movie.averageRating && (
-                    <p className="text-yellow-600">⭐ {movie.averageRating}/10</p>
+                <div key={movie.tconst} className="border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-medium text-gray-800">{movie.primary_title}</h4>
+                  <p className="text-gray-600">Year: {movie.release_year}</p>
+                  {movie.average_rating && (
+                    <p className="text-yellow-600">⭐ {movie.average_rating}/10</p>
                   )}
                 </div>
               ))}
