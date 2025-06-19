@@ -272,65 +272,32 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // NEW: Get movies with filters
-    fastify.get("/movies", async (request, reply) => {
-        const { 
-            limit = 20, 
-            offset = 0, 
-            genre, 
-            year, 
-            minRating, 
-            sortBy = 'average_rating',
-            sortOrder = 'DESC' 
-        } = request.query;
-
-        try {
-            let query = "SELECT t.* FROM title t";
-            let whereConditions = [];
-            let params = [];
-
-            // Add genre filter if specified
-            if (genre) {
-                query += " JOIN genres g ON t.tconst = g.tconst";
-                whereConditions.push("g.genres = ?");
-                params.push(genre);
-            }
-
-            // Add year filter
-            if (year) {
-                whereConditions.push("t.release_year = ?");
-                params.push(year);
-            }
-
-            // Add minimum rating filter
-            if (minRating) {
-                whereConditions.push("t.average_rating >= ?");
-                params.push(minRating);
-            }
-
-            // Add WHERE clause if we have conditions
-            if (whereConditions.length > 0) {
-                query += " WHERE " + whereConditions.join(" AND ");
-            }
-
-            // Add sorting
-            const validSortFields = ['primary_title', 'release_year', 'average_rating', 'numvotes'];
-            const validSortOrders = ['ASC', 'DESC'];
-            
-            if (validSortFields.includes(sortBy) && validSortOrders.includes(sortOrder.toUpperCase())) {
-                query += ` ORDER BY t.${sortBy} ${sortOrder.toUpperCase()}`;
-            }
-
-            // Add pagination
-            query += " LIMIT ? OFFSET ?";
-            params.push(parseInt(limit), parseInt(offset));
-
-            const [rows] = await db.execute(query, params);
-            return rows;
-        } catch (err) {
-            fastify.log.error(err);
-            return reply.code(500).send({ error: "Failed to fetch movies" });
-        }
+    fastify.get('/movies', async (request, reply) => {
+    try {
+        const [rows] = await db.query(`
+        SELECT
+            t.tconst,
+            t.primary_title,
+            t.numvotes,
+            t.average_rating,
+            t.runtime,
+            t.release_year,
+            GROUP_CONCAT(DISTINCT pd.name SEPARATOR ', ')   AS directors,
+            GROUP_CONCAT(DISTINCT pw.name SEPARATOR ', ')   AS writers,
+            GROUP_CONCAT(DISTINCT g.genres SEPARATOR ', ')  AS genres
+            FROM title AS t
+            LEFT JOIN director AS d  ON t.tconst = d.tconst
+            LEFT JOIN people   AS pd ON d.nconst = pd.nconst
+            LEFT JOIN writer    AS w ON t.tconst = w.tconst
+            LEFT JOIN people   AS pw ON w.nconst = pw.nconst
+            LEFT JOIN genres    AS g ON t.tconst = g.tconst
+        GROUP BY t.tconst, t.primary_title, t.numvotes, t.runtime, t.release_year
+        `);
+        return rows;
+    } catch (err) {
+        request.log.error(err);
+        reply.code(500).send({ error: 'Could not fetch movies' });
+    }
     });
 
     // Start server

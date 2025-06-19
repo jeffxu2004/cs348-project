@@ -234,11 +234,35 @@ const MovieDashboard = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allMovies, setAllMovies] = useState<any[]>([]);
+  const [loadingAll, setLoadingAll] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
     loadFavorites();
   }, []);
+
+  const loadAllMovies = async () => {
+    setLoadingAll(true);
+    try {
+      const res = await fetch('http://localhost:3000/movies', {
+        credentials: 'include', // if you need cookies/session
+      });
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+      // movies will already look like:
+      // [{ tconst, primary_title, numvotes, average_rating, runtime, release_year,
+      //    directors: "Name1, Name2", writers: "NameA", genres: "Action, Thriller" }, …]
+      const movies = await res.json();
+      setAllMovies(movies);
+    } catch (err) {
+      console.error('Failed to load movies overview:', err);
+    } finally {
+      setLoadingAll(false);
+    }
+  };
+
 
   const loadFavorites = async () => {
     try {
@@ -381,6 +405,40 @@ const MovieDashboard = () => {
             </div>
           )}
         </div>
+
+        {/* All‑Movies Overview */}
+      <div className="bg-white rounded-lg shadow-md p-6 mt-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">All Movies Overview</h2>
+          <button onClick={loadAllMovies} disabled={loadingAll} className="…">
+            {loadingAll ? 'Loading…' : 'Refresh'}
+          </button>
+        </div>
+
+        {allMovies.length === 0 ? (
+          <p className="text-gray-600">No data loaded yet. Click “Refresh” to load all movies.</p>
+        ) : (
+          <ul className="space-y-2">
+            {allMovies.map(movie => (
+              <li key={movie.tconst} className="border p-3 rounded-lg">
+                <div className="font-medium">
+                  {movie.primary_title} ({movie.release_year})
+                </div>
+                <div className="text-gray-600 text-sm">
+                  Votes: {movie.numvotes} • Rating: {movie.average_rating.toFixed(1)} • Runtime: {movie.runtime} min
+                </div>
+                <div className="mt-2 text-gray-800">
+                  <strong>Directors:</strong> {movie.directors || '—'}
+                  <br/>
+                  <strong>Writers:</strong>   {movie.writers   || '—'}
+                  <br/>
+                  <strong>Genres:</strong>    {movie.genres    || '—'}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       </div>
     </div>
   );
