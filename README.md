@@ -12,6 +12,8 @@ Install MariaDB and then follow the instructions to set up
 Run the following to set up an admin user
 ```
 mariadb -u root -p
+```
+```
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pass';
 GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
