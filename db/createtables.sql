@@ -3,61 +3,101 @@ USE movie_app;
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS favorites;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS casts;
+DROP TABLE IF EXISTS principal;
+DROP TABLE IF EXISTS writer;
+DROP TABLE IF EXISTS director;
+DROP TABLE IF EXISTS know_for;
+DROP TABLE IF EXISTS profession;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS people;
-DROP TABLE IF EXISTS ratings;
-DROP TABLE IF EXISTS titles;
+DROP TABLE IF EXISTS title;
 
--- Create titles table
-CREATE TABLE titles (
-  tid VARCHAR(100) PRIMARY KEY,
-  titleType VARCHAR(50),
-  primaryTitle TEXT,
-  startYear INT,
-  genres TEXT
+-- Create title table
+CREATE TABLE title (
+  tconst VARCHAR(100) PRIMARY KEY,
+  primary_title TEXT,
+  numvotes INT,
+  average_rating FLOAT,
+  runtime INT,
+  release_year INT
 );
 
--- Create ratings table
-CREATE TABLE ratings (
-  tid VARCHAR(100) PRIMARY KEY,
-  averageRating FLOAT,
-  numVotes INT,
-  FOREIGN KEY (tid) REFERENCES titles(tid)
+-- Create genres table  
+CREATE TABLE genres (
+  tconst VARCHAR(100),
+  genres VARCHAR(100),
+  PRIMARY KEY (tconst, genres),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
 );
 
 -- Create people table
 CREATE TABLE people (
-  pid VARCHAR(100) PRIMARY KEY,
+  nconst VARCHAR(100) PRIMARY KEY,
   name TEXT,
-  birthYear INT,
-  deathYear INT
+  birthyear INT,
+  deathyear INT
 );
 
--- Create cast table
-CREATE TABLE casts (
-  tid VARCHAR(100),
-  pid VARCHAR(100),
-  role VARCHAR(100),
-  PRIMARY KEY (tid, pid),
-  FOREIGN KEY (tid) REFERENCES titles(tid),
-  FOREIGN KEY (pid) REFERENCES people(pid)
+-- Create profession table
+CREATE TABLE profession (
+  nconst VARCHAR(100),
+  profession VARCHAR(100),
+  PRIMARY KEY (nconst, profession),
+  FOREIGN KEY (nconst) REFERENCES people(nconst)
+);
+
+-- Create know_for table
+CREATE TABLE know_for (
+  nconst VARCHAR(100),
+  title VARCHAR(100),
+  PRIMARY KEY (nconst, title),
+  FOREIGN KEY (nconst) REFERENCES people(nconst)
+);
+
+-- Create director table
+CREATE TABLE director (
+  nconst VARCHAR(100),
+  tconst VARCHAR(100),
+  PRIMARY KEY (nconst, tconst),
+  FOREIGN KEY (nconst) REFERENCES people(nconst),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
+);
+
+-- Create writer table
+CREATE TABLE writer (
+  nconst VARCHAR(100),
+  tconst VARCHAR(100),
+  PRIMARY KEY (nconst, tconst),
+  FOREIGN KEY (nconst) REFERENCES people(nconst),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
+);
+
+-- Create principal table
+CREATE TABLE principal (
+  nconst VARCHAR(100),
+  tconst VARCHAR(100),
+  job VARCHAR(100),
+  category VARCHAR(100),
+  character_name VARCHAR(200),
+  PRIMARY KEY (nconst, tconst),
+  FOREIGN KEY (nconst) REFERENCES people(nconst),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
 );
 
 -- Create user table
-CREATE TABLE users (
+CREATE TABLE user (
   userid VARCHAR(100) PRIMARY KEY,
   username VARCHAR(100) NOT NULL,
   password VARCHAR(100) NOT NULL,
-  is_admin BOOLEAN NOT NULL
+  isAdmin BOOLEAN NOT NULL
 );
 
 -- Create favorites table
 CREATE TABLE favorites (
-  tid VARCHAR(100),
   userid VARCHAR(100),
-  PRIMARY KEY (tid, userid),
-  FOREIGN KEY (tid) REFERENCES titles(tid),
-  FOREIGN KEY (userid) REFERENCES users(userid)
+  tconst VARCHAR(100),
+  PRIMARY KEY (userid, tconst),
+  FOREIGN KEY (userid) REFERENCES user(userid),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
 );
-

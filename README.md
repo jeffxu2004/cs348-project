@@ -1,26 +1,19 @@
-# cs348-project
+# CS 348 Project
 
-1. ssh into and set up the student env and ``connect to CS348;``
-2. git clone this repo
-3. run createtables.sql
-4. run populatetables.sql
+This repo contains the files created by our group for the 
+CS 348 project. Below are the instructions to run the code locally
 
 
-To run QueryDB.py
+## Clone the repo
 
 ```bash
-python -m venv myenv
-source myenv/bin/activate
-pip install ibm_db
-python QueryDB.py
+git clone https://github.com/jeffxu2004/cs348-project.git
 ```
 
-frontend:
-```
-cd app
-npm i
-npm run dev
-```
 
-to have ssh forward the port, do
-`ssh -L 5173:local_host:5173 username@server.whatever`
+## Setup database using the following 
+
+```bash
+mysql -u root -p < db/createtables.sql
+mysql -u root -p < db/populatetables.sql
+```

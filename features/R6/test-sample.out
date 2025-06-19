@@ -1,0 +1,121 @@
+-- Insertion operation of Example Movie
+-- title table
+tconst  primary_title   numvotes        average_rating  runtime release_year
+tt0068646       The Godfather   1900000 9.2     175     1972
+tt0071562       The Godfather Part II   1300000 9       202     1974
+tt0108052       Schindler's List        1400000 8.9     195     1993
+tt0109830       Forrest Gump    2100000 8.8     142     1994
+tt0110912       Pulp Fiction    2000000 8.9     154     1994
+tt0111161       The Shawshank Redemption        2700000 9.3     142     1994
+tt0120737       The Lord of the Rings: The Fellowship of the Ring       1800000 8.8     178     2001
+tt0137523       Fight Club      1900000 8.8     139     1999
+tt0167260       The Lord of the Rings: The Return of the King   1900000 8.9     201     2003
+tt0468569       The Dark Knight 2600000 9       152     2008
+tt9999999       Example Movie   0       NULL    120     2024
+
+--genres table
+tconst  genres
+tt0068646       Crime
+tt0068646       Drama
+tt0071562       Crime
+tt0071562       Drama
+tt0108052       Biography
+tt0108052       Drama
+tt0109830       Drama
+tt0109830       Romance
+tt0110912       Crime
+tt0110912       Drama
+tt0111161       Drama
+tt0120737       Adventure
+tt0120737       Drama
+tt0120737       Fantasy
+tt0137523       Drama
+tt0167260       Action
+tt0167260       Adventure
+tt0167260       Drama
+tt0468569       Action
+tt0468569       Crime
+tt0468569       Drama
+tt9999999       Drama
+tt9999999       Thriller
+
+
+-- Deletion of inserted Movie
+tconst  primary_title   numvotes        average_rating  runtime release_year
+tt0068646       The Godfather   1900000 9.2     175     1972
+tt0071562       The Godfather Part II   1300000 9       202     1974
+tt0108052       Schindler's List        1400000 8.9     195     1993
+tt0109830       Forrest Gump    2100000 8.8     142     1994
+tt0110912       Pulp Fiction    2000000 8.9     154     1994
+tt0111161       The Shawshank Redemption        2700000 9.3     142     1994
+tt0120737       The Lord of the Rings: The Fellowship of the Ring       1800000 8.8     178     2001
+tt0137523       Fight Club      1900000 8.8     139     1999
+tt0167260       The Lord of the Rings: The Return of the King   1900000 8.9     201     2003
+tt0468569       The Dark Knight 2600000 9       152     2008
+tconst  genres
+tt0068646       Crime
+tt0068646       Drama
+tt0071562       Crime
+tt0071562       Drama
+tt0108052       Biography
+tt0108052       Drama
+tt0109830       Drama
+tt0109830       Romance
+tt0110912       Crime
+tt0110912       Drama
+tt0111161       Drama
+tt0120737       Adventure
+tt0120737       Drama
+tt0120737       Fantasy
+tt0137523       Drama
+tt0167260       Action
+tt0167260       Adventure
+tt0167260       Drama
+tt0468569       Action
+tt0468569       Crime
+tt0468569       Drama
+
+
+-- Update of Forrest Gump runtime
+
+tconst  primary_title   numvotes        average_rating  runtime release_year
+tt0068646       The Godfather   1900000 9.2     175     1972
+tt0071562       The Godfather Part II   1300000 9       202     1974
+tt0108052       Schindler's List        1400000 8.9     195     1993
+tt0109830       Forrest Gump    2100000 8.8     125     1994
+tt0110912       Pulp Fiction    2000000 8.9     154     1994
+tt0111161       The Shawshank Redemption        2700000 9.3     142     1994
+tt0120737       The Lord of the Rings: The Fellowship of the Ring       1800000 8.8     178     2001
+tt0137523       Fight Club      1900000 8.8     139     1999
+tt0167260       The Lord of the Rings: The Return of the King   1900000 8.9     201     2003
+tt0468569       The Dark Knight 2600000 9       152     2008
+
+
+
+-- Inser of genres (tt0137523 now is also an action movie)
+
+tconst  genres
+tt0068646       Crime
+tt0068646       Drama
+tt0071562       Crime
+tt0071562       Drama
+tt0108052       Biography
+tt0108052       Drama
+tt0109830       Drama
+tt0109830       Romance
+tt0110912       Crime
+tt0110912       Drama
+tt0111161       Drama
+tt0120737       Adventure
+tt0120737       Drama
+tt0120737       Fantasy
+tt0137523       Action
+tt0137523       Drama
+tt0167260       Action
+tt0167260       Adventure
+tt0167260       Drama
+tt0468569       Action
+tt0468569       Crime
+tt0468569       Drama
+
+
