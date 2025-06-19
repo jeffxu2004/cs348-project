@@ -5,7 +5,7 @@ CS 348 project. Below are the instructions to run the code locally
 
 # Install and Set Up MariaDB
 ```
-[https://mariadb.com/downloads/?utm_source=header&utm_medium=website](https://mariadb.com/)
+https://mariadb.com/
 ```
 Install MariaDB and then follow the instructions to set up
 
