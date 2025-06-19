@@ -9,7 +9,7 @@ https://mariadb.com/
 ```
 Install MariaDB and then follow the instructions to set up
 
-Run the following to set up an admin user
+OPTIONAL: Run the following to set up an admin user
 ```
 mariadb -u root -p
 ```
@@ -44,7 +44,7 @@ git clone https://github.com/jeffxu2004/cs348-project.git
 
 2. Run the backend of the application
 
-    *Important*: Before running the commands below you will need to 
+    *Important*: If you did not do the optional admin user step, before running the commands below, you will need to 
     update the username and password to what matches your mysql configuration. 
 
 
