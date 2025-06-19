@@ -1,0 +1,39 @@
+-- user login
+userid  username        password        isAdmin
+a1      admin   admin   1
+a11     uwaterloo_student       password        0
+u1      alice   passAlice123    0
+u10     julia   juliaLoveMovies 0
+u2      bob     secureBob456    0
+u3      charlie charlie789      0
+u4      diana   dianaPwd321     0
+u5      eric    ericSecure456   0
+u6      fiona   fionaPwd999     0
+u7      george  george1234      0
+u8      hannah  hannahPass1     0
+u9      ian     ianSecret2      0
+
+-- favorites table
+userid  tconst
+u1      tt0068646
+u6      tt0068646
+u3      tt0071562
+u8      tt0071562
+u3      tt0108052
+u6      tt0108052
+u10     tt0109830
+u5      tt0109830
+u2      tt0110912
+u7      tt0110912
+u1      tt0111161
+u3      tt0111161
+u8      tt0111161
+u4      tt0120737
+u9      tt0120737
+u5      tt0137523
+u9      tt0137523
+u10     tt0167260
+u4      tt0167260
+a11     tt0468569
+u2      tt0468569
+u7      tt0468569

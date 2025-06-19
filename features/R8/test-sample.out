@@ -1,0 +1,45 @@
+
+-- Top 100 movies (filter out indie movies with small amount of ratings)
+primary_title   release_year    average_rating  numvotes
+The Shawshank Redemption        1994    9.3     2700000
+The Godfather   1972    9.2     1900000
+The Dark Knight 2008    9       2600000
+The Godfather Part II   1974    9       1300000
+Pulp Fiction    1994    8.9     2000000
+The Lord of the Rings: The Return of the King   2003    8.9     1900000
+Schindler's List        1993    8.9     1400000
+Forrest Gump    1994    8.8     2100000
+Fight Club      1999    8.8     1900000
+The Lord of the Rings: The Fellowship of the Ring       2001    8.8     1800000
+
+
+-- Top 100 Most Popular Movies
+primary_title   release_year    average_rating  numvotes
+The Shawshank Redemption        1994    9.3     2700000
+The Dark Knight 2008    9       2600000
+Forrest Gump    1994    8.8     2100000
+Pulp Fiction    1994    8.9     2000000
+The Godfather   1972    9.2     1900000
+Fight Club      1999    8.8     1900000
+The Lord of the Rings: The Return of the King   2003    8.9     1900000
+The Lord of the Rings: The Fellowship of the Ring       2001    8.8     1800000
+Schindler's List        1993    8.9     1400000
+The Godfather Part II   1974    9       1300000
+
+-- Best Movies in 1999
+primary_title   release_year    average_rating  numvotes
+Fight Club      1999    8.8     1900000
+
+
+-- 10 Random Movies
+primary_title   release_year    average_rating
+Pulp Fiction    1994    8.9
+The Lord of the Rings: The Return of the King   2003    8.9
+The Shawshank Redemption        1994    9.3
+Fight Club      1999    8.8
+Forrest Gump    1994    8.8
+The Godfather Part II   1974    9
+Schindler's List        1993    8.9
+The Lord of the Rings: The Fellowship of the Ring       2001    8.8
+The Godfather   1972    9.2
+The Dark Knight 2008    9
