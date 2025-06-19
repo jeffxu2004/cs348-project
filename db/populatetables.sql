@@ -128,17 +128,18 @@ INSERT INTO casts (tid, pid, role) VALUES
 
 
 -- Insert Users
-INSERT INTO users (userid, username, password) VALUES
-('u1', 'alice', 'passAlice123'),
-('u2', 'bob', 'secureBob456'),
-('u3', 'charlie', 'charlie789'),
-('u4', 'diana', 'dianaPwd321'),
-('u5', 'eric', 'ericSecure456'),
-('u6', 'fiona', 'fionaPwd999'),
-('u7', 'george', 'george1234'),
-('u8', 'hannah', 'hannahPass1'),
-('u9', 'ian', 'ianSecret2'),
-('u10', 'julia', 'juliaLoveMovies');
+INSERT INTO users (userid, username, password, is_admin) VALUES
+('u1', 'alice', 'passAlice123', FALSE),
+('u2', 'bob', 'secureBob456', FALSE),
+('u3', 'charlie', 'charlie789', FALSE),
+('u4', 'diana', 'dianaPwd321', FALSE),
+('u5', 'eric', 'ericSecure456', FALSE),
+('u6', 'fiona', 'fionaPwd999', FALSE),
+('u7', 'george', 'george1234', FALSE),
+('u8', 'hannah', 'hannahPass1', FALSE),
+('u9', 'ian', 'ianSecret2', FALSE),
+('u10', 'julia', 'juliaLoveMovies', FALSE),
+('a1', 'admin', 'admin', TRUE);
 
 
 -- Insert Favorites (at least 2 per user)

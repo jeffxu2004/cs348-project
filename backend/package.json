@@ -1,17 +1,21 @@
 {
-  "name": "backend",
+  "name": "movie-app-backend",
   "version": "1.0.0",
-  "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "fastify": "^5.4.0",
-    "mysql2": "^3.14.1"
+    "fastify": "^4.24.3",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/cookie": "^9.2.0",
+    "mysql2": "^3.6.5",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2"
   },
-  "type": "module"
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
 }

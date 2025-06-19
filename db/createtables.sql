@@ -47,8 +47,9 @@ CREATE TABLE casts (
 -- Create user table
 CREATE TABLE users (
   userid VARCHAR(100) PRIMARY KEY,
-  username VARCHAR(100),
-  password VARCHAR(100)
+  username VARCHAR(100) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  is_admin BOOLEAN NOT NULL
 );
 
 -- Create favorites table
