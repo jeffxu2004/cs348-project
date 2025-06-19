@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Lock, LogIn, LogOut, Heart, Search } from 'lucide-react';
+import './App.css';
 
-// Auth Context
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in on app start
   useEffect(() => {
     checkAuth();
   }, []);
@@ -30,7 +29,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const login = async (username, password) => {
-    console.log('Login function called with:', { username }); // Debug log
+    console.log('Login function called with:', { username });
     try {
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
@@ -41,9 +40,9 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify({ username, password }),
       });
 
-      console.log('Response status:', response.status); // Debug log
+      console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data); // Debug log
+      console.log('Response data:', data);
       
       if (response.ok) {
         setUser(data.user);
@@ -52,7 +51,7 @@ const AuthProvider = ({ children }) => {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      console.error('Login error:', error); // Debug log
+      console.error('Login error:', error);
       return { success: false, error: 'Login failed. Please try again.' };
     }
   };
@@ -84,7 +83,6 @@ const useAuth = () => {
   return context;
 };
 
-// Login Form Component
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -97,11 +95,11 @@ const LoginForm = () => {
     setError('');
     setIsLoading(true);
 
-    console.log('Attempting login with:', { username, password }); // Debug log
+    console.log('Attempting login with:', { username, password });
 
     const result = await login(username, password);
     
-    console.log('Login result:', result); // Debug log
+    console.log('Login result:', result);
     
     if (!result.success) {
       setError(result.error);
@@ -196,7 +194,6 @@ const LoginForm = () => {
   );
 };
 
-// Header Component
 const Header = () => {
   const { user, logout } = useAuth();
 
@@ -228,13 +225,12 @@ const Header = () => {
   );
 };
 
-// Simple Movie Dashboard
 const MovieDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [allMovies, setAllMovies] = useState<any[]>([]);
+  const [allMovies, setAllMovies] = useState([]);
   const [loadingAll, setLoadingAll] = useState(false);
   const { user } = useAuth();
 
@@ -246,14 +242,11 @@ const MovieDashboard = () => {
     setLoadingAll(true);
     try {
       const res = await fetch('http://localhost:3000/movies', {
-        credentials: 'include', // if you need cookies/session
+        credentials: 'include',
       });
       if (!res.ok) {
         throw new Error(`Server error: ${res.status}`);
       }
-      // movies will already look like:
-      // [{ tconst, primary_title, numvotes, average_rating, runtime, release_year,
-      //    directors: "Name1, Name2", writers: "NameA", genres: "Action, Thriller" }, …]
       const movies = await res.json();
       setAllMovies(movies);
     } catch (err) {
@@ -263,7 +256,6 @@ const MovieDashboard = () => {
     }
   };
 
-
   const loadFavorites = async () => {
     try {
       const response = await fetch('http://localhost:3000/favorites', {
@@ -271,13 +263,10 @@ const MovieDashboard = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('🖥  fetched favorites:', data);
         setFavorites(data);
-      } else {
-        console.warn('❌ favorites fetch failed:', response.status);
       }
     } catch (error) {
-      console.error('🔥 loadFavorites error:', error);
+      console.error('loadFavorites error:', error);
     }
   };
 
@@ -285,14 +274,11 @@ const MovieDashboard = () => {
     if (e) e.preventDefault();
     if (searchQuery.length < 2) return;
 
-    console.log('Searching for:', searchQuery); // Debug log
     setLoading(true);
     try {
       const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}`);
-      console.log('Search response status:', response.status); // Debug log
       if (response.ok) {
         const data = await response.json();
-        console.log('Search results:', data); // Debug log
         setSearchResults(data);
       }
     } catch (error) {
@@ -315,7 +301,6 @@ const MovieDashboard = () => {
       });
 
       if (response.ok) {
-        // reload the updated favorites list
         loadFavorites();
       }
     } catch (error) {
@@ -328,7 +313,6 @@ const MovieDashboard = () => {
       <Header />
       
       <div className="container mx-auto p-6">
-        {/* Search Section */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Search Movies</h2>
           <div className="flex space-x-4">
@@ -386,7 +370,6 @@ const MovieDashboard = () => {
           )}
         </div>
 
-        {/* Favorites Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Favorites</h2>
           {favorites.length === 0 ? (
@@ -406,45 +389,43 @@ const MovieDashboard = () => {
           )}
         </div>
 
-        {/* All‑Movies Overview */}
-      <div className="bg-white rounded-lg shadow-md p-6 mt-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">All Movies Overview</h2>
-          <button onClick={loadAllMovies} disabled={loadingAll} className="…">
-            {loadingAll ? 'Loading…' : 'Refresh'}
-          </button>
-        </div>
+        <div className="bg-white rounded-lg shadow-md p-6 mt-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">All Movies Overview</h2>
+            <button onClick={loadAllMovies} disabled={loadingAll} className="btn-refresh">
+              {loadingAll ? 'Loading…' : 'Refresh'}
+            </button>
+          </div>
 
-        {allMovies.length === 0 ? (
-          <p className="text-gray-600">No data loaded yet. Click “Refresh” to load all movies.</p>
-        ) : (
-          <ul className="space-y-2">
-            {allMovies.map(movie => (
-              <li key={movie.tconst} className="border p-3 rounded-lg">
-                <div className="font-medium">
-                  {movie.primary_title} ({movie.release_year})
-                </div>
-                <div className="text-gray-600 text-sm">
-                  Votes: {movie.numvotes} • Rating: {movie.average_rating.toFixed(1)} • Runtime: {movie.runtime} min
-                </div>
-                <div className="mt-2 text-gray-800">
-                  <strong>Directors:</strong> {movie.directors || '—'}
-                  <br/>
-                  <strong>Writers:</strong>   {movie.writers   || '—'}
-                  <br/>
-                  <strong>Genres:</strong>    {movie.genres    || '—'}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+          {allMovies.length === 0 ? (
+            <p className="text-gray-600">No data loaded yet. Click “Refresh” to load all movies.</p>
+          ) : (
+            <ul className="space-y-2">
+              {allMovies.map(movie => (
+                <li key={movie.tconst} className="border p-3 rounded-lg">
+                  <div className="font-medium">
+                    {movie.primary_title} ({movie.release_year})
+                  </div>
+                  <div className="text-gray-600 text-sm">
+                    Votes: {movie.numvotes} • Rating: {movie.average_rating.toFixed(1)} • Runtime: {movie.runtime} min
+                  </div>
+                  <div className="mt-2 text-gray-800">
+                    <strong>Directors:</strong> {movie.directors || '—'}
+                    <br/>
+                    <strong>Writers:</strong>   {movie.writers   || '—'}
+                    <br/>
+                    <strong>Genres:</strong>    {movie.genres    || '—'}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-// Main App Component
 const MovieApp = () => {
   const { user, loading } = useAuth();
 
@@ -462,7 +443,6 @@ const MovieApp = () => {
   return user ? <MovieDashboard /> : <LoginForm />;
 };
 
-// Export the complete app with AuthProvider
 export default function App() {
   return (
     <AuthProvider>
