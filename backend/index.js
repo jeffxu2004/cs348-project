@@ -13,8 +13,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
     // Create DB connection
     const db = await mysql.createConnection({
         host: "localhost",
-        user: "root",
-        password: "password",
+        user: "admin",
+        password: "pass",
         database: "movie_app",
     });
 
@@ -51,7 +51,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         reply.send(rows);
     });
 
-    // Login endpoint - UPDATED for new schema
+    // Login endpoint
     fastify.post("/login", async (request, reply) => {
         const { username, password } = request.body;
 
@@ -121,7 +121,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         return { user: request.user };
     });
 
-    // Get user's favorites (protected route) - UPDATED for new schema
+    // Get user's favorites
     fastify.get("/favorites", { preHandler: verifyToken }, async (request, reply) => {
         try {
             const [rows] = await db.execute(`
@@ -139,7 +139,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // Add to favorites (protected route) - UPDATED for new schema
+    // Add to favorites
     fastify.post("/favorites", { preHandler: verifyToken }, async (request, reply) => {
         const { tconst } = request.body;
 
@@ -170,7 +170,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // Remove from favorites (protected route) - UPDATED for new schema
+    // Remove from favorites
     fastify.delete("/favorites/:tconst", { preHandler: verifyToken }, async (request, reply) => {
         const { tconst } = request.params;
 
@@ -191,7 +191,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    // search API - UPDATED for new schema
+    // search API
     fastify.get("/search", async (request, reply) => {
         const { q } = request.query;
 
