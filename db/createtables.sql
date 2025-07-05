@@ -77,10 +77,11 @@ CREATE TABLE writer (
 CREATE TABLE principal (
   nconst VARCHAR(100),
   tconst VARCHAR(100),
-  job VARCHAR(100),
+  ordering INT,
+  job VARCHAR(256),
   category VARCHAR(100),
-  character_name VARCHAR(200),
-  PRIMARY KEY (nconst, tconst),
+  character_name VARCHAR(512),
+  PRIMARY KEY (nconst, tconst, ordering),
   FOREIGN KEY (nconst) REFERENCES people(nconst),
   FOREIGN KEY (tconst) REFERENCES title(tconst)
 );

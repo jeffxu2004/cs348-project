@@ -1,1 +1,6 @@
 node_modules/
+
+# no need to send all the data to github
+data/*
+*.ipynb
+*.tsv
