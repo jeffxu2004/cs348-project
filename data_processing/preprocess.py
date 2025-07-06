@@ -71,8 +71,15 @@ def main():
     )
     title_table.columns = ['tconst', 'primary_title', 'release_year', 'runtime', 'average_rating', 'numvotes']
     print("Writing title_table to database...")
-    title_table.to_sql('title_table', engine, if_exists='append', index=False)
+    title_table.to_sql('title', engine, if_exists='append', index=False)
     print("Finished writing title_table.")
+    
+    genres_table = df_titles_clean[['tconst', 'genres']]
+    genres_table.dropna(subset=['genres'], inplace=True)
+    genres_table.genres = genres_table.genres.str.split(',')
+    genres_table = genres_table.explode('genres')
+    print("Writing genres to database...")
+    genres_table.to_sql('genres', engine, if_exists='append', index=False)
 
     # Cache valid keys
     valid_tconst = set(title_table['tconst'])
@@ -82,7 +89,7 @@ def main():
     people_table = df_names_clean[['nconst', 'primaryName', 'birthYear', 'deathYear']].copy()
     people_table.columns = ['nconst', 'name', 'birthyear', 'deathyear']
     print("Writing people_table to database...")
-    people_table.to_sql('people_table', engine, if_exists='append', index=False)
+    people_table.to_sql('people', engine, if_exists='append', index=False)
     print("Finished writing people_table.")
 
     # 6. Known-for titles table
@@ -96,7 +103,7 @@ def main():
         know_for_table['title'].isin(valid_tconst)
     ]
     print("Writing know_for_table to database...")
-    know_for_table.to_sql('know_for_table', engine, if_exists='append', index=False)
+    know_for_table.to_sql('know_for', engine, if_exists='append', index=False)
     print("Finished writing know_for_table.")
 
     # 7. Primary profession table
@@ -107,7 +114,7 @@ def main():
     primary_profession.columns = ['nconst', 'profession']
     primary_profession = primary_profession[primary_profession['nconst'].isin(valid_nconst)]
     print("Writing primary_profession to database...")
-    primary_profession.to_sql('primary_profession', engine, if_exists='append', index=False)
+    primary_profession.to_sql('profession', engine, if_exists='append', index=False)
     print("Finished writing primary_profession.")
 
     # 8. Crew: split into director and writer tables
@@ -124,7 +131,7 @@ def main():
         director_table['nconst'].isin(valid_nconst)
     ]
     print("Writing director_table to database...")
-    director_table.to_sql('director_table', engine, if_exists='append', index=False)
+    director_table.to_sql('director', engine, if_exists='append', index=False)
     print("Finished writing director_table.")
 
     # Writer table
@@ -138,7 +145,7 @@ def main():
         writer_table['nconst'].isin(valid_nconst)
     ]
     print("Writing writer_table to database...")
-    writer_table.to_sql('writer_table', engine, if_exists='append', index=False)
+    writer_table.to_sql('writer', engine, if_exists='append', index=False)
     print("Finished writing writer_table.")
 
     # 9. Principals: rename columns
@@ -148,7 +155,7 @@ def main():
     ].copy()
     principal_df.columns = ["tconst", "ordering", "nconst", "category", "job", "character_name"]
     print("Writing principals_table to database...")
-    principal_df.to_sql('principals_table', engine, if_exists='append', index=False)
+    principal_df.to_sql('principal', engine, if_exists='append', index=False)
     print("Finished writing principals_table.")
 
     print('IMDb data loaded and validated successfully.')
