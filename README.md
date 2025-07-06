@@ -69,3 +69,17 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     npm install
     npm run dev
     ```
+
+## Using production data
+
+Note these steps assume you have python installed. You may (optionally) have an enviroment for this project
+1. install the requirements
+    ```
+    pip install -r requirements.txt
+    ```
+
+2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
+    ```
+    python data_processing/preprocess.py
+    ```
+    Update the username and password on line 10 and 11
