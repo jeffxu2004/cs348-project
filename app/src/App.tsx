@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import { User, Lock, LogIn, LogOut, Heart, Search } from 'lucide-react';
 import './App.css';
 
@@ -225,6 +226,44 @@ const Header = () => {
   );
 };
 
+const MovieDetail = () => {
+  const { tconst } = useParams(); // get movie id from url
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/movies/${tconst}`, { credentials: 'include' });
+        if (!res.ok) throw new Error('Movie not found');
+        const data = await res.json();
+        setMovie(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMovie();
+  }, [tconst]);
+
+  if (loading) return <p>Loading...</p>;
+  if (!movie) return <p>Movie not found</p>;
+
+  return (
+    <div className="container mx-auto p-6">
+      <h2 className="text-3xl font-bold mb-4">{movie.primary_title} ({movie.release_year})</h2>
+      <p>Votes: {movie.numvotes}</p>
+      <p>Rating: {movie.average_rating.toFixed(1)}</p>
+      <p>Runtime: {movie.runtime} min</p>
+      <p><strong>Directors:</strong> {movie.directors || '—'}</p>
+      <p><strong>Writers:</strong> {movie.writers || '—'}</p>
+      <p><strong>Genres:</strong> {movie.genres || '—'}</p>
+      <Link to="/" className="movie-button">← Back to movies</Link>
+    </div>
+  );
+};
+
 const MovieDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -238,10 +277,40 @@ const MovieDashboard = () => {
     loadFavorites();
   }, []);
 
+  const sortOptions = [
+    { label: 'Top 100 Rated', path: '/movies/top-rated' },
+    { label: 'Most Popular', path: '/movies/most-popular' },
+    { label: 'Best of This Year', path: '/movies/best-of-year' },
+    { label: 'Random Picks', path: '/movies/random' },
+    { label: 'All Movies', path: '/movies/all' }
+  ];
+
+  const [sortPath, setSortPath] = useState('/movies/all');
+
+  useEffect(() => {
+    const loadSortedMovies = async () => {
+      setLoadingAll(true);
+      try {
+        const res = await fetch(`http://localhost:3000${sortPath}`, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+        const movies = await res.json();
+        setAllMovies(movies);
+      } catch (err) {
+        console.error('Failed to load sorted movies:', err);
+      } finally {
+        setLoadingAll(false);
+      }
+    };
+
+    loadSortedMovies();
+  }, [sortPath]);
+
   const loadAllMovies = async () => {
     setLoadingAll(true);
     try {
-      const res = await fetch('http://localhost:3000/movies', {
+      const res = await fetch(`http://localhost:3000${sortPath}`, {
         credentials: 'include',
       });
       if (!res.ok) {
@@ -378,7 +447,12 @@ const MovieDashboard = () => {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {favorites.map((movie) => (
                 <div key={movie.tconst} className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-800">{movie.primary_title}</h4>
+                  <Link
+                    to={`/movies/${movie.tconst}`}
+                    className="movie-button"
+                  >
+                    {movie.primary_title}
+                  </Link>
                   <p className="text-gray-600">Year: {movie.release_year}</p>
                   {movie.average_rating && (
                     <p className="text-yellow-600">⭐ {movie.average_rating}/10</p>
@@ -390,36 +464,62 @@ const MovieDashboard = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mt-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">All Movies Overview</h2>
-            <button onClick={loadAllMovies} disabled={loadingAll} className="btn-refresh">
-              {loadingAll ? 'Loading…' : 'Refresh'}
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Browse Movies</h2>
+            <div className="flex flex-wrap gap-2">
+              {sortOptions.map((opt) => (
+                <button
+                  key={opt.path}
+                  onClick={() => setSortPath(opt.path)}
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                    sortPath === opt.path
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mb-4 flex flex-col items-center space-y-2">
+            {allMovies.length === 0 && (
+              <p className="text-gray-600">No data loaded yet.</p>
+            )}
+            <button
+              onClick={loadAllMovies}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Refresh
             </button>
           </div>
 
-          {allMovies.length === 0 ? (
-            <p className="text-gray-600">No data loaded yet. Click “Refresh” to load all movies.</p>
-          ) : (
-            <ul className="space-y-2">
-              {allMovies.map(movie => (
-                <li key={movie.tconst} className="border p-3 rounded-lg">
-                  <div className="font-medium">
-                    {movie.primary_title} ({movie.release_year})
-                  </div>
-                  <div className="text-gray-600 text-sm">
-                    Votes: {movie.numvotes} • Rating: {movie.average_rating.toFixed(1)} • Runtime: {movie.runtime} min
-                  </div>
-                  <div className="mt-2 text-gray-800">
-                    <strong>Directors:</strong> {movie.directors || '—'}
-                    <br/>
-                    <strong>Writers:</strong>   {movie.writers   || '—'}
-                    <br/>
-                    <strong>Genres:</strong>    {movie.genres    || '—'}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className="space-y-2">
+            {allMovies.map((movie) => (
+              <li key={movie.tconst} className="border p-3 rounded-lg">
+                <div className="font-medium">
+                  <Link
+                    to={`/movies/${movie.tconst}`}
+                    className="movie-button"
+                  >
+                    {movie.primary_title}
+                  </Link>{' '}
+                  ({movie.release_year})
+                </div>
+                <div className="text-gray-600 text-sm">
+                  Votes: {movie.numvotes} • Rating: {movie.average_rating.toFixed(1)} • Runtime: {movie.runtime} min
+                </div>
+                <div className="mt-2 text-gray-800">
+                  <strong>Directors:</strong> {movie.directors || '—'}
+                  <br />
+                  <strong>Writers:</strong> {movie.writers || '—'}
+                  <br />
+                  <strong>Genres:</strong> {movie.genres || '—'}
+                </div>
+              </li>
+            ))}
+          </ul>
+
         </div>
       </div>
     </div>
@@ -445,8 +545,13 @@ const MovieApp = () => {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MovieApp />
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/movies/:tconst" element={<MovieDetail />} />
+          <Route path="/*" element={<MovieApp />} />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }

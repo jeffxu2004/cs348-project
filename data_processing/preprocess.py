@@ -27,13 +27,19 @@ DATA_FILES = {
     'principals': 'title.principals.tsv.gz'
 }
 
-def load_tsv_gz(filename, **kwargs):
+def load_tsv_gz(filename, chunksize=100_000, **kwargs):
     print(f"Starting download for {filename}...")
     url = f"{BASE_URL}/{filename}"
     response = requests.get(url, stream=True)
     response.raise_for_status()
+
+    chunks = []
     with gzip.GzipFile(fileobj=response.raw) as f:
-        df = pd.read_csv(f, sep='\t', na_values='\\N', low_memory=False, **kwargs)
+        for chunk in pd.read_csv(f, sep='\t', na_values='\\N', low_memory=False,
+                                 chunksize=chunksize, **kwargs):
+            chunks.append(chunk)
+
+    df = pd.concat(chunks, ignore_index=True)
     print(f"Completed download for {filename}: {len(df)} rows loaded.")
     return df
 

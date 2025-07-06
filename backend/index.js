@@ -272,7 +272,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
-    fastify.get('/movies', async (request, reply) => {
+    fastify.get('/movies/all', async (request, reply) => {
     try {
         const [rows] = await db.query(`
         SELECT
@@ -298,6 +298,86 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         request.log.error(err);
         reply.code(500).send({ error: 'Could not fetch movies' });
     }
+    });
+
+    fastify.get("/movies/top-rated", async (req, reply) => {
+    const [rows] = await db.query(`
+        SELECT primary_title, release_year, average_rating, numvotes
+        FROM title
+        WHERE numvotes > 10000
+        ORDER BY average_rating DESC, numvotes DESC
+        LIMIT 100;
+    `);
+    return rows;
+});
+
+    fastify.get("/movies/most-popular", async (req, reply) => {
+        const [rows] = await db.query(`
+            SELECT primary_title, release_year, average_rating, numvotes
+            FROM title
+            ORDER BY numvotes DESC
+            LIMIT 100;
+        `);
+        return rows;
+    });
+
+    fastify.get("/movies/best-of-year", async (req, reply) => {
+        const currentYear = new Date().getFullYear();
+        const [rows] = await db.query(`
+            SELECT primary_title, release_year, average_rating, numvotes
+            FROM title
+            WHERE release_year = ? AND numvotes > 5000
+            ORDER BY average_rating DESC
+            LIMIT 50;
+        `, [currentYear]);
+        return rows;
+    });
+
+    fastify.get("/movies/random", async (req, reply) => {
+        const [rows] = await db.query(`
+            SELECT primary_title, release_year, average_rating
+            FROM title
+            WHERE numvotes > 10000
+            ORDER BY RAND()
+            LIMIT 10;
+        `);
+        return rows;
+    });
+
+    fastify.get('/movies/:tconst', async (request, reply) => {
+        const { tconst } = request.params;
+
+        try {
+            const [rows] = await db.query(`
+            SELECT
+                t.tconst,
+                t.primary_title,
+                t.numvotes,
+                t.average_rating,
+                t.runtime,
+                t.release_year,
+                GROUP_CONCAT(DISTINCT pd.name SEPARATOR ', ') AS directors,
+                GROUP_CONCAT(DISTINCT pw.name SEPARATOR ', ') AS writers,
+                GROUP_CONCAT(DISTINCT g.genres SEPARATOR ', ') AS genres
+            FROM title AS t
+            LEFT JOIN director AS d ON t.tconst = d.tconst
+            LEFT JOIN people AS pd ON d.nconst = pd.nconst
+            LEFT JOIN writer AS w ON t.tconst = w.tconst
+            LEFT JOIN people AS pw ON w.nconst = pw.nconst
+            LEFT JOIN genres AS g ON t.tconst = g.tconst
+            WHERE t.tconst = ?
+            GROUP BY t.tconst, t.primary_title, t.numvotes, t.runtime, t.release_year
+            `, [tconst]);
+
+            if (rows.length === 0) {
+            return reply.code(404).send({ error: 'Movie not found' });
+            }
+
+            return rows[0];
+        } catch (err) {
+            request.log.error(err);
+            return reply.code(500).send({ error: 'Server error' });
+        }
     });
 
     // Start server
