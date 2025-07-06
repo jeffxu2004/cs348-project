@@ -38,8 +38,8 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Run the following commands
 
     ```bash
-    mysql -u root -p < db/createtables.sql
-    mysql -u root -p < db/populatetables.sql
+    mariadb -u root -p < db/createtables.sql
+    mariadb -u root -p < db/populatetables.sql
     ```
 
 2. Run the backend of the application
@@ -65,7 +65,7 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Run the following commands.
 
     ```bash
-    cd frontend
+    cd app
     npm install
     npm run dev
     ```
