@@ -184,56 +184,56 @@ INSERT INTO writer (nconst, tconst) VALUES
 ('nm0000709', 'tt0109830'); -- Robert Zemeckis - Forrest Gump
 
 -- Insert into principal table (main cast)
-INSERT INTO principal (nconst, tconst, job, category, character_name) VALUES
+INSERT INTO principal (nconst, tconst, ordering, job, category, character_name) VALUES
 -- The Shawshank Redemption
-('nm0000209', 'tt0111161', 'actor', 'actor', 'Red'),
-('nm0000151', 'tt0111161', 'actor', 'actor', 'Andy Dufresne'),
-('nm0348409', 'tt0111161', 'actor', 'actor', 'Warden Norton'),
+('nm0000209', 'tt0111161', 0, 'actor', 'actor', 'Red'),
+('nm0000151', 'tt0111161', 0, 'actor', 'actor', 'Andy Dufresne'),
+('nm0348409', 'tt0111161', 0, 'actor', 'actor', 'Warden Norton'),
 
 -- The Godfather
-('nm0000199', 'tt0068646', 'actor', 'actor', 'Vito Corleone'),
-('nm0000197', 'tt0068646', 'actor', 'actor', 'Michael Corleone'),
-('nm0001001', 'tt0068646', 'actor', 'actor', 'Sonny Corleone'),
+('nm0000199', 'tt0068646', 0, 'actor', 'actor', 'Vito Corleone'),
+('nm0000197', 'tt0068646', 0, 'actor', 'actor', 'Michael Corleone'),
+('nm0001001', 'tt0068646', 0, 'actor', 'actor', 'Sonny Corleone'),
 
 -- The Dark Knight
-('nm0000288', 'tt0468569', 'actor', 'actor', 'Bruce Wayne / Batman'),
-('nm0005132', 'tt0468569', 'actor', 'actor', 'Joker'),
-('nm0001173', 'tt0468569', 'actor', 'actor', 'Harvey Dent'),
+('nm0000288', 'tt0468569', 0, 'actor', 'actor', 'Bruce Wayne / Batman'),
+('nm0005132', 'tt0468569', 0, 'actor', 'actor', 'Joker'),
+('nm0001173', 'tt0468569', 0, 'actor', 'actor', 'Harvey Dent'),
 
 -- The Godfather Part II
-('nm0000197', 'tt0071562', 'actor', 'actor', 'Michael Corleone'),
-('nm0000199', 'tt0071562', 'actor', 'actor', 'Vito Corleone'),
-('nm0000134', 'tt0071562', 'actor', 'actor', 'Young Vito'),
+('nm0000197', 'tt0071562', 0, 'actor', 'actor', 'Michael Corleone'),
+('nm0000199', 'tt0071562', 0, 'actor', 'actor', 'Vito Corleone'),
+('nm0000134', 'tt0071562', 0, 'actor', 'actor', 'Young Vito'),
 
 -- Schindler's List
-('nm0000553', 'tt0108052', 'actor', 'actor', 'Oskar Schindler'),
-('nm0000146', 'tt0108052', 'actor', 'actor', 'Itzhak Stern'),
-('nm0000164', 'tt0108052', 'actor', 'actor', 'Amon Goeth'),
+('nm0000553', 'tt0108052', 0, 'actor', 'actor', 'Oskar Schindler'),
+('nm0000146', 'tt0108052', 0, 'actor', 'actor', 'Itzhak Stern'),
+('nm0000164', 'tt0108052', 0, 'actor', 'actor', 'Amon Goeth'),
 
 -- Return of the King
-('nm0000704', 'tt0167260', 'actor', 'actor', 'Frodo Baggins'),
-('nm0001557', 'tt0167260', 'actor', 'actor', 'Aragorn'),
-('nm0005212', 'tt0167260', 'actor', 'actor', 'Gandalf'),
+('nm0000704', 'tt0167260', 0, 'actor', 'actor', 'Frodo Baggins'),
+('nm0001557', 'tt0167260', 0, 'actor', 'actor', 'Aragorn'),
+('nm0005212', 'tt0167260', 0, 'actor', 'actor', 'Gandalf'),
 
 -- Pulp Fiction
-('nm0000237', 'tt0110912', 'actor', 'actor', 'Vincent Vega'),
-('nm0000235', 'tt0110912', 'actor', 'actor', 'Jules Winnfield'),
-('nm0000236', 'tt0110912', 'actress', 'actress', 'Mia Wallace'),
+('nm0000237', 'tt0110912', 0, 'actor', 'actor', 'Vincent Vega'),
+('nm0000235', 'tt0110912', 0, 'actor', 'actor', 'Jules Winnfield'),
+('nm0000236', 'tt0110912', 0, 'actress', 'actress', 'Mia Wallace'),
 
 -- Fight Club
-('nm0000093', 'tt0137523', 'actor', 'actor', 'Tyler Durden'),
-('nm0001570', 'tt0137523', 'actor', 'actor', 'The Narrator'),
-('nm0000260', 'tt0137523', 'actress', 'actress', 'Marla Singer'),
+('nm0000093', 'tt0137523', 0, 'actor', 'actor', 'Tyler Durden'),
+('nm0001570', 'tt0137523', 0, 'actor', 'actor', 'The Narrator'),
+('nm0000260', 'tt0137523', 0, 'actress', 'actress', 'Marla Singer'),
 
 -- Fellowship of the Ring
-('nm0000704', 'tt0120737', 'actor', 'actor', 'Frodo Baggins'),
-('nm0005212', 'tt0120737', 'actor', 'actor', 'Gandalf'),
-('nm0089217', 'tt0120737', 'actor', 'actor', 'Legolas'),
+('nm0000704', 'tt0120737', 0, 'actor', 'actor', 'Frodo Baggins'),
+('nm0005212', 'tt0120737', 0, 'actor', 'actor', 'Gandalf'),
+('nm0089217', 'tt0120737', 0, 'actor', 'actor', 'Legolas'),
 
 -- Forrest Gump
-('nm0000158', 'tt0109830', 'actor', 'actor', 'Forrest Gump'),
-('nm0000705', 'tt0109830', 'actress', 'actress', 'Jenny Curran'),
-('nm0000641', 'tt0109830', 'actor', 'actor', 'Lieutenant Dan');
+('nm0000158', 'tt0109830', 0, 'actor', 'actor', 'Forrest Gump'),
+('nm0000705', 'tt0109830', 0, 'actress', 'actress', 'Jenny Curran'),
+('nm0000641', 'tt0109830', 0, 'actor', 'actor', 'Lieutenant Dan');
 
 -- Insert Users
 INSERT INTO user (userid, username, password, isAdmin) VALUES
