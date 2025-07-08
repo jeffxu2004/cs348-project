@@ -87,7 +87,14 @@ Note these steps assume you have python installed. You may (optionally) have an 
 
 2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
     ```bash
+    python -m venv venv
+    .\venv\Scripts\Activate.ps1
+    ```
+    ```bash
     python data_processing/preprocess.py
+    ```
+    ```
+    deactivate
     ```
     Update the username and password on line 10 and 11
 3. Create indexes to improve performance
