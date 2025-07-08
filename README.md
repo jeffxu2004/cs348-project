@@ -77,10 +77,11 @@ Note these steps assume you have python installed. You may (optionally) have an 
     ```
     pip install -r requirements.txt
     ```
-    As an aside before running the python script make sure the database tables are created
+    As an aside before running the python script make sure the database tables and indexes are created
     ```
     mariadb -u root -p < db/createtables.sql
     mariadb -u root -p < db/user.sql
+    mariadb -u root -p < db/index.sql
     ```
     Since the IMDB dataset takes care of all movie information, we will still use our previous user table
     to put information about them.
