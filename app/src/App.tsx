@@ -224,16 +224,16 @@ const Header = () => {
           <span>Movie App</span>
         </h1>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-between">
           <span className="text-blue-100">Welcome, {user?.username}!</span>
-          {user?.isAdmin && (
+          {user?.isAdmin ? (
             <span className="bg-yellow-500 text-yellow-900 px-2 py-1 rounded text-xs font-medium">
               Admin
             </span>
-          )}
+          ) : null}
           <button
             onClick={logout}
-            className="flex items-center space-x-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg transition-colors"
+            className="ml-auto flex items-center space-x-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg transition-colors"
           >
             <LogOut className="w-4 h-4" />
             <span>Logout</span>

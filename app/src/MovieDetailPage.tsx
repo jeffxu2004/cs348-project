@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { createContext, useEffect, useState, useContext } from "react";
 import { Trash2 } from 'lucide-react';
 import EditMovieForm from "./EditMovieForm";
@@ -60,7 +60,7 @@ export default function MovieDetailPage() {
         <p><strong>Writers:</strong> {movie.writers || '—'}</p>
         <p><strong>Genres:</strong> {movie.genres || '—'}</p>
     
-        {user?.isAdmin && (
+        {user?.isAdmin ? (
           <button
             onClick={handleDelete}
             className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 mt-4"
@@ -68,9 +68,9 @@ export default function MovieDetailPage() {
             <Trash2 className="w-5 h-5 mr-2" />
             Delete Movie
           </button>
-        )}
+        ) : null}
 
-        {user?.isAdmin && (
+        {user?.isAdmin ? (
           <button
             onClick={() => setShowEdit(!showEdit)}
             className="button-primary"
@@ -78,7 +78,7 @@ export default function MovieDetailPage() {
           >
             {showEdit ? "Cancel" : "Edit Movie"}
           </button>
-        )}
+        ) : null}
       </div>
 
       {showEdit && user?.isAdmin && (
@@ -92,6 +92,7 @@ export default function MovieDetailPage() {
           }}
         />
       )}
+    <Link to="/" className="movie-button">← Back to movies</Link>
     </div>
   );
 }
