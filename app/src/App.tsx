@@ -1,15 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { Heart, Lock, LogIn, LogOut, Search, User } from "lucide-react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
+    Link,
+    Route,
     BrowserRouter as Router,
     Routes,
-    Route,
-    Link,
     useParams,
 } from "react-router-dom";
-import { User, Lock, LogIn, LogOut, Heart, Search } from "lucide-react";
-import MovieDetailPage from "./MovieDetailPage";
-import EditMovieForm from "./EditMovieForm";
 import "./App.css";
+import EditMovieForm from "./EditMovieForm";
+import MovieDetailPage from "./MovieDetailPage";
 
 const AuthContext = createContext(null);
 
