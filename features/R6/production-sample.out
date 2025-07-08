@@ -1,0 +1,28 @@
+-- Insertion operation of Example Movie
+-- after running SELECT * FROM title WHERE tconst = 'tt9999999';
+-- SELECT * FROM genres WHERE tconst = 'tt9999999'
+-- only view the row with corresponding Insertion
+
+tconst  primary_title   numvotes        average_rating  runtime release_year
+tt9999999       Example Movie   0       NULL    120     2024
+
+tconst  genres
+tt9999999       Action
+tt9999999       Mystery
+
+- deletion means no output when requested
+
+
+-- Update
+-- after running 
+--- SELECT * FROM title WHERE tconst = 'tt0109830';
+--- SELECT * FROM genres WHERE tconst = 'tt0109830';
+-- only showing relevant tconst due to size of production data
+tconst  primary_title   numvotes        average_rating  runtime release_year
+tt0109830       Forrest Gump    2393669 8.8     125     1994
+tconst  genres
+tt0109830       Drama
+tt0109830       Romance
+
+
+
