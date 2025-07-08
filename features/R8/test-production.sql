@@ -14,10 +14,10 @@ FROM title t
 ORDER BY t.numvotes DESC
 LIMIT 100;
 
--- Best Movies in 1999
+-- Best Movies in this year
 SELECT t.primary_title, t.release_year, t.average_rating, t.numvotes
 FROM title t
-WHERE t.release_year = 1999
+WHERE t.release_year = 2025
   AND t.numvotes > 5000
 ORDER BY t.average_rating DESC
 LIMIT 50;

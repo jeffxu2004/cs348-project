@@ -1,3 +1,5 @@
+
+-- Top 100 movies
 primary_title	release_year	average_rating	numvotes
 The Shawshank Redemption	2277	9.3	3064099
 The Godfather	1972	9.2	2138585
@@ -99,6 +101,8 @@ Cinema Paradiso	1988	8.5	303392
 Modern Times	1936	8.5	274689
 City Lights	1931	8.5	208133
 Senna	2010	8.5	81248
+
+-- Top 100 Most Popular Movies
 primary_title	release_year	average_rating	numvotes
 The Shawshank Redemption	2277	9.3	3064099
 The Dark Knight	2008	9	3038492
@@ -200,65 +204,70 @@ Spider-Man	2002	7.4	928546
 Spirited Away	2001	8.6	917815
 The Revenant	2015	8	915899
 Once Upon a Time... in Hollywood	2019	7.6	915283
+
+-- Best Movies in this year
 primary_title	release_year	average_rating	numvotes
-Fight Club	1999	8.8	2483099
-The Matrix	1999	8.7	2166759
-The Green Mile	1999	8.6	1495088
-Mudhalvan	1999	8.4	9061
-Thulladha Manamum Thullum	1999	8.3	7008
-American Beauty	1999	8.3	1253364
-The Sixth Sense	1999	8.2	1104899
-Padaiyappa	1999	8.2	8654
-Cosy Dens	1999	8.1	6638
-The Color of Paradise	1999	8.1	18904
-The Iron Giant	1999	8.1	246908
-Sarfarosh	1999	8.1	28082
-The Straight Story	1999	8	104810
-Magnolia	1999	8	339206
-Vaastav: The Reality	1999	8	15465
-Toy Story 2	1999	7.9	647971
-Gloomy Sunday	1999	7.8	8700
-One Day in September	1999	7.8	6556
-October Sky	1999	7.8	103573
-Kaun?	1999	7.8	5664
-All About My Mother	1999	7.8	107264
-Herod's Law	1999	7.8	7536
-My Best Fiend	1999	7.8	12728
-American Movie	1999	7.8	20642
-The Insider	1999	7.8	187344
-South Park: Bigger, Longer & Uncut	1999	7.7	220926
-Kikujiro	1999	7.7	23058
-Not One Less	1999	7.7	9640
-The Road Home	1999	7.7	14289
-Being John Malkovich	1999	7.7	363169
-Office Space	1999	7.6	300407
-Butterfly	1999	7.6	10296
-Buena Vista Social Club	1999	7.6	21477
-Beyond the Mat	1999	7.6	9665
-The Boondock Saints	1999	7.6	257997
-Peppermint Candy	1999	7.6	11753
-The Hurricane	1999	7.6	105565
-Gigantic	1999	7.6	5003
-Eyes Wide Shut	1999	7.5	402498
-A Room for Romeo Brass	1999	7.5	6350
-Mr. Death: The Rise and Fall of Fred A. Leuchter, Jr.	1999	7.5	5905
-Boys Don't Cry	1999	7.5	106207
-The Mission	1999	7.5	6495
-Ratcatcher	1999	7.5	12528
-Bang Boom Bang - Ein todsicheres Ding	1999	7.5	11167
-Ghost Dog: The Way of the Samurai	1999	7.5	101209
-The Rifleman of the Voroshilov Regiment	1999	7.4	5430
-The Wind Will Carry Us	1999	7.4	13224
-Girl on the Bridge	1999	7.4	14707
-The Talented Mr. Ripley	1999	7.4	262537
+Kaalidhar Laapata	2025	8.9	6572
+Jai Mata ji - lets Rock	2025	8.6	8719
+Oficina do Diabo	2025	8.2	33738
+Tourist Family	2025	8.2	8569
+Niram Marum Ulagil	2025	8.2	8295
+Metro in Dino	2025	8.2	5299
+Ne Zha 2	2025	8.1	11498
+Shaunki Sardar	2025	8.1	7254
+How to Train Your Dragon	2025	8.1	45215
+Kesari Chapter 2: The Untold Story of Jallianwala Bagh	2025	8	11605
+F1: The Movie	2025	7.9	64098
+Court - State Vs. A Nobody	2025	7.9	8923
+Rekhachithram	2025	7.9	13956
+Dragon	2025	7.9	13463
+KPop Demon Hunters	2025	7.8	17945
+Sinners	2025	7.7	181005
+Thudarum	2025	7.6	9266
+Becoming Led Zeppelin	2025	7.5	5330
+Eleven	2025	7.5	7929
+Predator: Killer of Killers	2025	7.5	34361
+Officer on Duty	2025	7.5	9219
+Mission: Impossible - The Final Reckoning	2025	7.4	105354
+Ponman	2025	7.4	6798
+The Ballad of Wallis Island	2025	7.4	6925
+Thunderbolts*	2025	7.4	126764
+Sitaare Zameen Par	2025	7.3	22951
+Chhaava	2025	7.3	33773
+Bring Her Back	2025	7.3	16585
+Maa	2025	7.3	15040
+Identity	2025	7.3	9713
+Warfare	2025	7.3	59279
+Vadakkan	2025	7.2	5820
+28 Years Later	2025	7.1	52186
+Ballerina	2025	7.1	47389
+Borbaad	2025	7.1	17704
+The Ugly Stepsister	2025	7	13991
+Elio	2025	7	8499
+The Diplomat	2025	7	13413
+HIT: The 3rd Case	2025	6.9	9771
+Badass Ravikumar	2025	6.9	9122
+Companion	2025	6.9	121281
+The King of Kings	2025	6.9	5693
+Final Destination: Bloodlines	2025	6.9	81457
+Nonnas	2025	6.9	30129
+Lilo & Stitch	2025	6.9	44161
+Veera Dheera Sooran: Part 2	2025	6.9	6145
+Sky Force	2025	6.9	12390
+The Phoenician Scheme	2025	6.8	25067
+Ground Zero	2025	6.8	6286
+The Life List	2025	6.8	28320
+
+
+-- 10 Random Movies (for obvious reason this would change everytime the query is run)
 primary_title	release_year	average_rating
-The Way Way Back	2013	7.4
-Ratchet & Clank	2016	5.5
-Black Sabbath	1963	7
-No Exit	2022	6.1
-Kaththi	2014	8.1
-Infinite	2021	5.5
-The Trip	2010	7
-Frozen Stiff	2002	8.3
-Jurassic Park III	2001	5.9
-Twister	1996	6.6
+Turnabout	2016	7
+Short Circuit 2	1988	5.8
+The Road Home	1999	7.7
+Old School	2003	7
+RV	2006	5.6
+Dracula Untold	2014	6.2
+This Is England	2006	7.7
+I Am Not Your Negro	2016	7.9
+The Ceremony	1995	7.5
+Godzilla: King of the Monsters	2019	6
