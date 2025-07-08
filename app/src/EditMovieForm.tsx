@@ -62,6 +62,7 @@ export default function EditMovieForm() {
       const result = await res.json();
       if (res.ok) {
         alert("Movie updated successfully!");
+        location.reload()
         navigate(`/movies/${tconst}`);
       } else {
         alert(result.error || "Update failed.");
