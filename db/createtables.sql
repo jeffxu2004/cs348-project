@@ -3,6 +3,7 @@ USE movie_app;
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS principal;
 DROP TABLE IF EXISTS writer;
 DROP TABLE IF EXISTS director;
@@ -102,3 +103,15 @@ CREATE TABLE favorites (
   FOREIGN KEY (userid) REFERENCES user(userid),
   FOREIGN KEY (tconst) REFERENCES title(tconst)
 );
+
+
+
+-- Reivew 
+CREATE TABLE reviews(
+  userid VARCHAR(100),
+  tconst VARCHAR(100),
+  content VARCHAR(1024),
+  PRIMARY KEY (userid, tconst),
+  FOREIGN KEY (userid) REFERENCES user(userid),
+  FOREIGN KEY (tconst) REFERENCES title(tconst)
+)
