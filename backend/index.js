@@ -380,6 +380,52 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-producti
         }
     });
 
+    fastify.put("/movies/:tconst", { preHandler: verifyToken }, async (request, reply) => {
+        const { tconst } = request.params;
+        const {
+            primary_title,
+            average_rating,
+            release_year,
+            runtime,
+            numvotes
+        } = request.body;
+
+        // Optional: Restrict to admin users
+        if (!request.user.isAdmin) {
+            return reply.code(403).send({ error: "Admin access required" });
+        }
+
+        try {
+            const [result] = await db.execute(`
+                UPDATE title 
+                SET 
+                    primary_title = ?,
+                    average_rating = ?,
+                    release_year = ?,
+                    runtime = ?,
+                    numvotes = ?
+                WHERE tconst = ?
+            `, [
+                primary_title,
+                average_rating,
+                release_year,
+                runtime,
+                numvotes,
+                tconst
+            ]);
+
+            if (result.affectedRows === 0) {
+                return reply.code(404).send({ error: "Movie not found or no changes made" });
+            }
+
+            return { success: true, message: "Movie updated successfully" };
+        } catch (err) {
+            request.log.error(err);
+            return reply.code(500).send({ error: "Failed to update movie" });
+        }
+    });
+
+
     // Start server
     try {
         const address = await fastify.listen({ port: 3000 });

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import { User, Lock, LogIn, LogOut, Heart, Search } from 'lucide-react';
+import MovieDetailPage from './MovieDetailPage';
+import EditMovieForm from './EditMovieForm';
 import './App.css';
 
 const AuthContext = createContext(null);
@@ -548,7 +550,8 @@ export default function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/movies/:tconst" element={<MovieDetail />} />
+          <Route path="/movies/:tconst" element={<MovieDetailPage />} />
+          <Route path="/movies/:tconst/edit" element={<EditMovieForm />} />
           <Route path="/*" element={<MovieApp />} />
         </Routes>
       </AuthProvider>
