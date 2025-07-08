@@ -1,10 +1,9 @@
+import cors from "@fastify/cors";
 import Fastify from "fastify";
-import mysql from "mysql2/promise";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mysql from "mysql2/promise";
 
 const fastify = Fastify({ logger: true });
-import cors from "@fastify/cors";
 
 const JWT_SECRET = process.env.JWT_SECRET || "key";
 
