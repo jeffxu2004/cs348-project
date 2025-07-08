@@ -90,3 +90,31 @@ Note these steps assume you have python installed. You may (optionally) have an 
     python data_processing/preprocess.py
     ```
     Update the username and password on line 10 and 11
+
+
+## Feautes Implemented
+
+
+1. User login (Milestone 1)
+    can be found in
+    ```
+    app/src/App.tsx
+    backend/index.js
+    ```
+2. Movie Overview (Milestone 1)
+    ```
+    app/src/App.tsx
+    backend/index.js
+    ```
+3. Main page with common sorting tabs (Milestone 2)
+    ```
+    app/src/App.tsx
+    backend/index.js
+    ```
+4. Modify Movies
+    ```
+    app/src/App.tsx
+    backend/index.js
+    app/src/EditMovieForm.tsx
+    app/src/MovieDetailPage.tsx
+    ```
