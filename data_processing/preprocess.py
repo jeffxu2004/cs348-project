@@ -7,13 +7,12 @@ import mysql.connector
 # Configuration: update these with your MySQL credentials and DB details
 config = {
     "host": "localhost",
-    "user": "root",
-    "password": "password",
+    "user": "admin",
+    "password": "pass",
     "database": "movie_app",
 }
 
-
-def insert_dataframe_to_mysql(df, table_name, connection_config, batch_size=1_000_000):
+def insert_dataframe_to_mysql(df, table_name, connection_config, batch_size=5000):
 
     columns = list(df.columns)
     column_names = ", ".join(
@@ -26,7 +25,7 @@ def insert_dataframe_to_mysql(df, table_name, connection_config, batch_size=1_00
         for row in df.values
     ]
     conn = mysql.connector.connect(**connection_config)
-    cursor = conn.cursor()
+    cursor = conn.cursor(buffered=True)
 
     # Insert in batches
     print(f"About to insert to {table_name}...")
@@ -35,12 +34,11 @@ def insert_dataframe_to_mysql(df, table_name, connection_config, batch_size=1_00
     ):
         batch = data[i : i + batch_size]
         cursor.executemany(sql, batch)
+        conn.commit()
     print(f"Done insertion into {table_name}!")
 
-    conn.commit()
     cursor.close()
     conn.close()
-
 
 # Base URL for IMDb datasets
 BASE_URL = "https://datasets.imdbws.com"
@@ -51,7 +49,6 @@ DATA_FILES = {
     "crew": "title.crew.tsv.gz",
     "principals": "title.principals.tsv.gz",
 }
-
 
 def load_tsv_gz(filename, chunksize=100_000, **kwargs):
     print(f"Starting download for {filename}...")
@@ -74,7 +71,6 @@ def load_tsv_gz(filename, chunksize=100_000, **kwargs):
     df = pd.concat(chunks, ignore_index=True)
     print(f"Completed download for {filename}: {len(df)} rows loaded.")
     return df
-
 
 # Main ETL process
 def main():

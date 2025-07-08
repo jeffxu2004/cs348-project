@@ -1,4 +1,5 @@
 node_modules/
+venv/
 
 # no need to send all the data to github
 data/*
