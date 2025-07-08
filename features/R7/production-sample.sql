@@ -1,7 +1,6 @@
 USE movie_app;
 
-SELECT --- REDO ON 
-
+SELECT
    t.tconst,
    t.primary_title,
    t.numvotes,
@@ -17,5 +16,5 @@ SELECT --- REDO ON
    LEFT JOIN writer    AS w ON t.tconst = w.tconst
    LEFT JOIN people   AS pw ON w.nconst = pw.nconst
    LEFT JOIN genres    AS g ON t.tconst = g.tconst
-   WHERE t.tconst = 'tt0068646'
+   WHERE t.tconst = 'tt0072308'
 GROUP BY t.tconst, t.primary_title, t.numvotes, t.runtime, t.release_year;

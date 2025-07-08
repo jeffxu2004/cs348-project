@@ -1,11 +1,2 @@
 tconst  primary_title   numvotes        average_rating  runtime release_year    directors       writers genres
 tt0068646       The Godfather   1900000 9.2     175     1972    Francis Ford Coppola    Francis Ford Coppola    Crime, Drama
-tt0071562       The Godfather Part II   1300000 9       202     1974    Francis Ford Coppola    Francis Ford Coppola    Crime, Drama
-tt0108052       Schindler's List        1400000 8.9     195     1993    Steven Spielberg        Steven Spielberg        Biography, Drama
-tt0109830       Forrest Gump    2100000 8.8     125     1994    Robert Zemeckis Robert Zemeckis Drama, Romance
-tt0110912       Pulp Fiction    2000000 8.9     154     1994    Quentin Tarantino       Quentin Tarantino       Crime, Drama
-tt0111161       The Shawshank Redemption        2700000 9.3     142     1994    Frank Darabont  Frank Darabont  Drama
-tt0120737       The Lord of the Rings: The Fellowship of the Ring       1800000 8.8     178     2001    Peter Jackson   Peter Jackson   Adventure, Drama, Fantasy
-tt0137523       Fight Club      1900000 8.8     139     1999    David Fincher   David Fincher   Action, Drama
-tt0167260       The Lord of the Rings: The Return of the King   1900000 8.9     201     2003    Peter Jackson   Peter Jackson   Action, Adventure, Drama
-tt0468569       The Dark Knight 2600000 9       152     2008    Christopher Nolan       Christopher Nolan       Action, Crime, Drama
