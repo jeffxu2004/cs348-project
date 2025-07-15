@@ -1,8 +1,13 @@
+import os
+import zipfile
 import gzip
 import requests
+import random
+from io import BytesIO
 import pandas as pd
 from tqdm import tqdm
 import mysql.connector
+from faker import Faker
 
 # Configuration: update these with your MySQL credentials and DB details
 config = {
@@ -72,9 +77,44 @@ def load_tsv_gz(filename, chunksize=100_000, **kwargs):
     print(f"Completed download for {filename}: {len(df)} rows loaded.")
     return df
 
+
+MOVIELENS_URL = 'https://files.grouplens.org/datasets/movielens/ml-25m.zip'
+FILES_TO_LOAD = {'links.csv', 'ratings.csv', 'tags.csv'}
+
+def download_movielens_zip():
+    """
+    Downloads the MovieLens zip file and returns a ZipFile object.
+    """
+    print('Downloading the movielens dataset, may take some time...')
+    response = requests.get(MOVIELENS_URL)
+    response.raise_for_status()
+    return zipfile.ZipFile(BytesIO(response.content))
+
+def load_movielens_data() -> dict:
+    """
+    Downloads and loads all three MovieLens CSV files into a dictionary of DataFrames.
+    Keys are 'ratings', 'tags', 'links'.
+    """
+    dfs = {}
+    with download_movielens_zip() as zf:
+        for file_name in FILES_TO_LOAD:
+            with zf.open(f"ml-25m/{file_name}") as file:
+                key = file_name.replace('.csv', '')
+                dfs[key] = pd.read_csv(file)
+    return dfs
+
+def create_users(id):
+    user_id = 'u' + str(id)
+    fake_user_name = Faker().user_name()
+    fake_password = fake_user_name + 'password' +str(random.randint(10, 999))
+    return (user_id, fake_user_name, fake_password, False)
+
+
 # Main ETL process
 def main():
-
+    dfs = load_movielens_data()
+    link_csv, tags, rating_df = dfs['links'], dfs['tags'], dfs['ratings']
+    
     # 1. Load raw datasets
     df_titles = load_tsv_gz(DATA_FILES["titles"])
     df_ratings = load_tsv_gz(DATA_FILES["ratings"])
@@ -127,6 +167,8 @@ def main():
         "numvotes",
     ]
     insert_dataframe_to_mysql(title_table, "title", config)
+    
+    
     genres_table = df_titles_clean[["tconst", "genres"]]
     genres_table.dropna(subset=["genres"], inplace=True)
     genres_table.genres = genres_table.genres.str.split(",")
@@ -207,10 +249,38 @@ def main():
         "job",
         "character_name",
     ]
-    """print("Writing principals_table to database...")
-    principal_df.to_sql('principal', engine, if_exists='append', index=False)
-    print("Finished writing principals_table.")"""
-    insert_dataframe_to_mysql(principal_df, "principal", config)
+    #insert_dataframe_to_mysql(principal_df, "principal", config)
+    
+    # creating user table
+    user_table = []
+    user_table.append(('a01', 'admin', 'admin', True))
+    user_table.append(('u00', 'alice', 'passAlice123', False))
+    
+    for id in tqdm(rating_df.userId.unique(), total=len(rating_df.userId.unique()), leave=False):
+        user_table.append(create_users(id))
+        
+    df = pd.DataFrame(user_table, columns=['userid', 'username', 'password', 'isAdmin'])
+    
+    insert_dataframe_to_mysql(df, 'user', config)
+
+
+    # links    
+    zero_to_add = (7 - link_csv.imdbId.astype(str).str.len()).map(lambda x: max(x, 0))
+    for i in range(len(zero_to_add)):
+        zero_to_add[i] = zero_to_add[i] * '0'
+    link_csv['tconst'] =  'tt' + zero_to_add +link_csv.imdbId.astype(str)
+    
+    movie_id = set(df_titles_clean['tconst'])
+    link_csv = link_csv[link_csv.tconst.isin(movie_id)]
+
+    # favorites table
+    favorites_table = rating_df[rating_df.rating == 5.0]
+    favorites_table = favorites_table[['userId', 'movieId']].reset_index()
+    favorites_table['userId'] = 'u' + favorites_table['userId'].astype('str')
+    favorites_table = pd.merge(link_csv, favorites_table, on="movieId", how="inner")[['userId', 'tconst']]
+    favorites_table.columns = ['userid', 'tconst']
+    insert_dataframe_to_mysql(favorites_table, 'favorites', config)
+    
 
     print("IMDb data loaded and validated successfully.")
 
