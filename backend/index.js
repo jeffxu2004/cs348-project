@@ -14,8 +14,8 @@ const JWT_SECRET =
   // Create DB connection
   const db = await mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "password",
+    user: "admin",
+    password: "pass",
     database: "movie_app",
   });
 
@@ -336,17 +336,51 @@ const JWT_SECRET =
 
   // search API
   fastify.get("/search", async (request, reply) => {
-    const { q } = request.query;
+    const { q, searchIn = "title" } = request.query;
 
     if (!q || q.length < 2) {
       return reply.code(400).send({ error: "Query too short" });
     }
 
     try {
-      const [rows] = await db.execute(
-        "SELECT tconst, primary_title, release_year FROM title WHERE primary_title LIKE ? LIMIT 20",
-        [`%${q}%`]
-      );
+      let rows;
+
+      if (searchIn === "full") {
+        // Full-text search on title and plot
+        [rows] = await db.execute(
+          `
+          SELECT 
+            tconst,
+            primary_title,
+            numvotes,
+            average_rating,
+            plot,
+            MATCH(primary_title, plot) AGAINST (? IN NATURAL LANGUAGE MODE) AS relevance
+          FROM title
+          WHERE MATCH(primary_title, plot) AGAINST (? IN NATURAL LANGUAGE MODE)
+          ORDER BY relevance DESC
+          LIMIT 20
+          `,
+          [q, q]
+        );
+      } else {
+        // Default: basic LIKE search on title
+        [rows] = await db.execute(
+          `
+          SELECT 
+            tconst,
+            primary_title,
+            numvotes,
+            average_rating,
+            plot
+          FROM title
+          WHERE primary_title LIKE ?
+          LIMIT 20
+          `,
+          [`%${q}%`]
+        );
+      }
+
       return rows;
     } catch (err) {
       fastify.log.error(err);

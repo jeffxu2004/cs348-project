@@ -248,6 +248,7 @@ const Header = () => {
 
 const MovieDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchIn, setSearchIn]     = useState("title");
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -326,9 +327,11 @@ const MovieDashboard = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}`
-      );
+      const url = new URL("http://localhost:3000/search");
+      url.searchParams.set("q", searchQuery);
+      url.searchParams.set("searchIn", searchIn);
+
+      const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
         setSearchResults(data);
@@ -383,6 +386,14 @@ const MovieDashboard = () => {
                 placeholder="Search for movies..."
               />
             </div>
+            <select
+              value={searchIn}
+              onChange={(e) => setSearchIn(e.target.value)}
+              className="border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="title">Title only</option>
+              <option value="full">Title + Plot</option>
+            </select>
             <button
               onClick={handleSearch}
               disabled={loading}
