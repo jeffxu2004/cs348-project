@@ -110,7 +110,7 @@ export default function MovieDetailPage() {
         {/* {\{movie.directors?.length ? movie.directors.join(", ") : '—'}</p>\} */}
         <p><strong>Writers:</strong> {movie.writers}</p>
         {/* {movie.writers?.length ? movie.writers.join(", ") : '—'}</p> */}
-        <p><strong>Genres:</strong> {movie.writers}</p>
+        <p><strong>Genres:</strong> {movie.genres}</p>
         {/* {movie.genres?.length ? movie.genres.join(", ") : '—'}</p> */}
         <ActorList actors={movie.cast} />
         {user && (

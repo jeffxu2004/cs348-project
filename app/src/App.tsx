@@ -366,8 +366,9 @@ const MovieDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-
-      {user?.isAdmin && <AddMovieForm onAdded={() => loadAllMovies()} />}
+      {user?.isAdmin ? (
+      <AddMovieForm onAdded={() => loadAllMovies()} />
+      ) : null}
 
       <div className="container mx-auto p-6">
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">

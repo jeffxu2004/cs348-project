@@ -24,6 +24,9 @@ WITH user_genre_count AS (
 SELECT userid, gini_index
 FROM gini_table;
 
+DROP TRIGGER IF EXISTS update_index;
+DROP TRIGGER IF EXISTS remove_index;
+
 DELIMITER $$
 
 CREATE TRIGGER update_index
@@ -59,10 +62,10 @@ BEGIN
     FROM gini_table
     WHERE userid = NEW.userid;
 
-    UPDATE user_gini_cache
-    SET
-        gini_index = new_gini
-    WHERE userid = NEW.userid;
+    INSERT INTO user_gini_cache (userid, gini_index)
+    VALUES (NEW.userid, new_gini)
+    ON DUPLICATE KEY UPDATE
+      gini_index = VALUES(gini_index);
 
 END$$
 
@@ -98,10 +101,10 @@ BEGIN
     FROM gini_table
     WHERE userid = OLD.userid;
 
-    UPDATE user_gini_cache
-    SET
-        gini_index = new_gini
-    WHERE userid = OLD.userid;
+    INSERT INTO user_gini_cache (userid, gini_index)
+    VALUES (OLD.userid, new_gini)
+    ON DUPLICATE KEY UPDATE
+      gini_index = VALUES(gini_index);
 
 END$$
 
