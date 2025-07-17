@@ -25,10 +25,6 @@ export default function MovieDetailPage() {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/movie/${tconst}`, { credentials: "include" })
-      .then((res) => res.json())
-      .then(setMovie)
-      .catch(console.error);
 
     fetch("http://localhost:3000/me", { credentials: "include" })
       .then((res) => res.ok ? res.json() : null)
@@ -36,10 +32,20 @@ export default function MovieDetailPage() {
   }, [tconst]);
 
   useEffect(() => {
-  fetch(`http://localhost:3000/movie/${tconst}`, { credentials: "include" })
-    .then(res => res.json())
-    .then(setMovie)
-    .catch(console.error);
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/movies/${tconst}`, { credentials: 'include' });
+        if (!res.ok) throw new Error('Movie not found');
+        const data = await res.json();
+        setMovie(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchMovie();
+  }, [tconst]);
+
+  useEffect(() => {
 
   fetch("http://localhost:3000/me", { credentials: "include" })
     .then(res => res.ok ? res.json() : null)
@@ -100,9 +106,12 @@ export default function MovieDetailPage() {
         <h2>{movie.primary_title} ({movie.release_year})</h2>
         <p><strong>Runtime:</strong> {movie.runtime} min</p>
         <p><strong>Rating:</strong> {movie.average_rating} ({movie.numvotes} votes)</p>
-        <p><strong>Directors:</strong> {movie.directors?.length ? movie.directors.join(", ") : '—'}</p>
-        <p><strong>Writers:</strong> {movie.writers?.length ? movie.writers.join(", ") : '—'}</p>
-        <p><strong>Genres:</strong> {movie.genres?.length ? movie.genres.join(", ") : '—'}</p>
+        <p><strong>Directors:</strong> {movie.directors}</p>
+        {/* {\{movie.directors?.length ? movie.directors.join(", ") : '—'}</p>\} */}
+        <p><strong>Writers:</strong> {movie.writers}</p>
+        {/* {movie.writers?.length ? movie.writers.join(", ") : '—'}</p> */}
+        <p><strong>Genres:</strong> {movie.writers}</p>
+        {/* {movie.genres?.length ? movie.genres.join(", ") : '—'}</p> */}
         <ActorList actors={movie.cast} />
         {user && (
           <div>

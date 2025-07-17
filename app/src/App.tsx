@@ -223,6 +223,7 @@ const Header = () => {
               Admin
             </span>
           ) : null}
+          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
           <button
             onClick={logout}
             className="ml-auto flex items-center space-x-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg transition-colors"
@@ -235,8 +236,8 @@ const Header = () => {
           {/* show Gini if available */}
           {gini !== null && (
             <span className="ml-4 bg-white/20 text-white px-2 py-1 rounded text-sm">
-              Gini: {gini.toFixed(2)}
-              Percentile: {percentile}%
+              Genres Diversity Index: {gini.toFixed(2)} <br/>
+              Your diversity index is better than {percentile}% of user
             </span>
           )}
           </div>

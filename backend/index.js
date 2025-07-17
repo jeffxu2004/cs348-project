@@ -14,8 +14,8 @@ const JWT_SECRET =
   // Create DB connection
   const db = await mysql.createConnection({
     host: "localhost",
-    user: "admin",
-    password: "pass",
+    user: "root",
+    password: "password",
     database: "movie_app",
   });
 

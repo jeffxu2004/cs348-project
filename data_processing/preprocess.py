@@ -109,11 +109,13 @@ def create_users(id):
     fake_password = fake_user_name + 'password' +str(random.randint(10, 999))
     return (user_id, fake_user_name, fake_password, False)
 
+DESCRIPTION_DATA_URL = "https://raw.githubusercontent.com/sahildit/IMDB-Movies-Extensive-Dataset-Analysis/refs/heads/master/data1/IMDb%20movies.csv"
 
 # Main ETL process
 def main():
     dfs = load_movielens_data()
     link_csv, tags, rating_df = dfs['links'], dfs['tags'], dfs['ratings']
+    description_df = pd.read_csv(DESCRIPTION_DATA_URL)
     
     # 1. Load raw datasets
     df_titles = load_tsv_gz(DATA_FILES["titles"])
@@ -166,8 +168,19 @@ def main():
         "average_rating",
         "numvotes",
     ]
-    insert_dataframe_to_mysql(title_table, "title", config)
     
+    # add some plots
+    description_df = description_df.dropna(subset=['description'])
+    description_df = description_df[['imdb_title_id', 'description']]
+    description_df.columns = ['tconst', 'plot']
+    title_table = pd.merge(
+        title_table,
+        description_df,
+        on='tconst',
+        how='left'
+    )
+    
+    insert_dataframe_to_mysql(title_table, "title", config)
     
     genres_table = df_titles_clean[["tconst", "genres"]]
     genres_table.dropna(subset=["genres"], inplace=True)
