@@ -5,49 +5,118 @@ html, body, #root {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #2f3136;
   color: #ddd;
+  overflow-x: hidden;
 }
 
-.login-container {
+.loading-screen {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
   background-color: #2f3136;
+  color: #ddd;
+  font-size: 1.25rem;
+  flex-direction: column;
 }
 
 .login-box {
-  background-color: #36393f;
-  border-radius: 12px;
+  background-color: #3a3c42;
   padding: 2rem;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  border-radius: 12px;
+  width: 600px;
   text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.login-icon-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, #7289da, #99aab5);
+.user-icon-wrapper {
   margin-bottom: 1rem;
 }
 
-.login-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #ddd;
+.user-icon {
+  color: #aaa;
+  width: 48px;
+  height: 48px;
 }
 
-.login-subtitle {
-  color: #b9bbbe;
-  margin-bottom: 2rem;
-  font-weight: 500;
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  text-align: left;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #555;
+  color: #eee;
+}
+
+input::placeholder {
+  color: #bbb;
+}
+
+input:focus {
+  outline: 2px solid #777;
+}
+
+.error-message {
+  color: rgb(255, 78, 78);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.login-button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  background-color: #777;
+  color: #ddd;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #999;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-icon {
+  color: #ddd;
+  width: 20px;
+  height: 20px;
+}
+
+.demo-users {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #bbb;
+  text-align: center;
+}
+
+.demo-user-credentials {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0.5rem;
+}
+
+.demo-user-credentials > div {
+  background-color: #444;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 .input-group {
@@ -401,4 +470,8 @@ html, body, #root {
 .movie-button:focus-visible {
   outline: 2px solid #66caf1;
   outline-offset: 2px;
+}
+
+ul {
+  margin-top: 0;
 }

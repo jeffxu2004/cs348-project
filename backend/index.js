@@ -354,7 +354,7 @@ const JWT_SECRET =
     }
   });
 
-  // NEW: Get movie details with cast and crew
+  // Get movie details with cast and crew
   fastify.get("/movie/:tconst", async (request, reply) => {
     const { tconst } = request.params;
 
@@ -402,11 +402,11 @@ const JWT_SECRET =
       // Get cast
       const [castRows] = await db.execute(
         `
-                SELECT p.name, pr.character 
-                FROM principal pr 
-                JOIN people p ON pr.nconst = p.nconst 
+                SELECT DISTINCT p.nconst, p.name, pr.character_name
+                FROM principal pr
+                JOIN people p ON pr.nconst = p.nconst
                 WHERE pr.tconst = ? AND pr.category IN ('actor', 'actress')
-                ORDER BY pr.character
+                ORDER BY pr.ordering
             `,
         [tconst]
       );
@@ -416,7 +416,18 @@ const JWT_SECRET =
         genres: genreRows.map((g) => g.genres),
         directors: directorRows.map((d) => d.name),
         writers: writerRows.map((w) => w.name),
-        cast: castRows,
+        cast: castRows.map((p) => ({
+          nconst: p.nconst,
+          name: p.name,
+          character: (() => {
+            try {
+              const parsed = JSON.parse(p.character_name);
+              return Array.isArray(parsed) ? parsed.join(", ") : parsed;
+            } catch {
+              return p.character_name;
+            }
+          })(),
+        })),
       };
     } catch (err) {
       fastify.log.error(err);
@@ -424,32 +435,80 @@ const JWT_SECRET =
     }
   });
 
-  fastify.get("/movies/all", async (request, reply) => {
+  fastify.get("/people/:nconst", async (request, reply) => {
+    const { nconst } = request.params;
+
     try {
-      const [rows] = await db.query(`
-        SELECT
-            t.tconst,
-            t.primary_title,
-            t.numvotes,
-            t.average_rating,
-            t.runtime,
-            t.release_year,
-            GROUP_CONCAT(DISTINCT pd.name SEPARATOR ', ')   AS directors,
-            GROUP_CONCAT(DISTINCT pw.name SEPARATOR ', ')   AS writers,
-            GROUP_CONCAT(DISTINCT g.genres SEPARATOR ', ')  AS genres
-            FROM title AS t
-            LEFT JOIN director AS d  ON t.tconst = d.tconst
-            LEFT JOIN people   AS pd ON d.nconst = pd.nconst
-            LEFT JOIN writer    AS w ON t.tconst = w.tconst
-            LEFT JOIN people   AS pw ON w.nconst = pw.nconst
-            LEFT JOIN genres    AS g ON t.tconst = g.tconst
-            WHERE t.average_rating > 9.0
-        GROUP BY t.tconst, t.primary_title, t.numvotes, t.runtime, t.release_year
-        `);
-      return rows;
+      // Get actor basic info
+      const [actorRows] = await db.execute(
+        "SELECT * FROM people WHERE nconst = ?",
+        [nconst]
+      );
+      if (actorRows.length === 0) {
+        return reply.code(404).send({ error: "Actor not found" });
+      }
+      const actor = actorRows[0];
+
+      // Get co-actors with count of shared unique movies in a single query
+      const [coActorsRows] = await db.execute(
+        `
+      SELECT 
+        p.nconst, 
+        p.name, 
+        COUNT(DISTINCT pr1.tconst) AS sharedMoviesCount
+      FROM principal pr1
+      JOIN principal pr2 ON pr1.tconst = pr2.tconst
+      JOIN people p ON pr1.nconst = p.nconst
+      WHERE pr2.nconst = ?
+        AND pr1.nconst != ?
+        AND pr1.category IN ('actor', 'actress')
+        AND pr2.category IN ('actor', 'actress')
+      GROUP BY p.nconst, p.name
+      ORDER BY sharedMoviesCount DESC, p.name
+      LIMIT 20
+      `,
+        [nconst, nconst]
+      );
+
+      return { actor, coActors: coActorsRows };
     } catch (err) {
-      request.log.error(err);
-      reply.code(500).send({ error: "Could not fetch movies" });
+      fastify.log.error(err);
+      return reply.code(500).send({ error: "Failed to fetch actor details" });
+    }
+  });
+
+  // Shared movies for query above
+  fastify.get("/shared-movies/:actor1/:actor2", async (request, reply) => {
+    const { actor1, actor2 } = request.params;
+
+    try {
+      const [rows] = await db.execute(
+        `
+      SELECT DISTINCT
+        t.tconst,
+        t.primary_title,
+        t.release_year,
+        MAX(p1_person.name) AS actor1_name,
+        MAX(p2_person.name) AS actor2_name
+      FROM principal p1
+      JOIN principal p2 ON p1.tconst = p2.tconst
+      JOIN title t ON t.tconst = p1.tconst
+      JOIN people p1_person ON p1.nconst = p1_person.nconst
+      JOIN people p2_person ON p2.nconst = p2_person.nconst
+      WHERE p1.nconst = ?
+        AND p2.nconst = ?
+        AND p1.category IN ('actor', 'actress')
+        AND p2.category IN ('actor', 'actress')
+      GROUP BY t.tconst, t.primary_title, t.release_year
+      ORDER BY t.primary_title
+      `,
+        [actor1, actor2]
+      );
+
+      return { sharedMovies: rows };
+    } catch (err) {
+      fastify.log.error(err);
+      return reply.code(500).send({ error: "Failed to fetch shared movies" });
     }
   });
 
