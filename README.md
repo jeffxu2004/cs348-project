@@ -80,10 +80,7 @@ Note these steps assume you have python installed. You may (optionally) have an 
     As an aside before running the python script make sure the database tables and indexes are created
     ```bash
     mariadb -u root -p < db/createtables.sql
-    mariadb -u root -p < db/user.sql
     ```
-    Since the IMDB dataset takes care of all movie information, we will still use our previous user table
-    to put information about them.
 
 2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
     ```bash
@@ -97,7 +94,12 @@ Note these steps assume you have python installed. You may (optionally) have an 
     deactivate
     ```
     Update the username and password on line 10 and 11
-3. Create indexes to improve performance
+3. Setup for advance features
+    ```bash
+    mariadb -u root -p db/insert_gini.sql
+    mariadb -u root -p db/addfancysearch.sql
+    ```
+4. Create indexes to improve performance
    ```bash
     mariadb -u root -p < db/index.sql
    ```
