@@ -215,6 +215,37 @@ const LoginForm = () => {
 
 const Header = () => {
   const { user, logout } = useAuth();
+  const [gini, setGini] = useState<number | null>(null);
+  const [percentile, setPercentile] = useState<number | null>(null);
+
+  useEffect(() => {
+    // when we get a user, fetch its gini
+    if (!user?.userid) return;
+    (async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/users/${user.userid}/gini`,
+          { credentials: "include" }
+        );
+        if (res.ok) {
+          const { gini_index } = await res.json();
+          setGini(gini_index);
+          // Now fetch percentile
+          const percentileRes = await fetch(
+            `http://localhost:3000/gini-percentile?value=${gini_index}`,
+            { credentials: "include" }
+          );
+          if (percentileRes.ok) {
+            const { percentile } = await percentileRes.json();
+            setPercentile(percentile);
+          }
+        }
+
+      } catch (err) {
+        console.error("Could not load gini score or percentile:", err);
+      }
+    })();
+  }, [user]);
 
   return (
     <header className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 shadow-lg">
@@ -239,6 +270,15 @@ const Header = () => {
             <span>Logout</span>
           </button>
         </div>
+          <div className="flex items-center justify-between">
+          {/* show Gini if available */}
+          {gini !== null && (
+            <span className="ml-4 bg-white/20 text-white px-2 py-1 rounded text-sm">
+              Gini: {gini.toFixed(2)}
+              Percentile: {percentile}%
+            </span>
+          )}
+          </div>
       </div>
     </header>
   );

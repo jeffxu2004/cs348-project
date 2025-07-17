@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS movie_app;
 USE movie_app;
 
 -- Drop tables if they exist
+DROP TABLE IF EXISTS user_gini_cache;
 DROP TABLE IF EXISTS favorites;
 DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS principal;
@@ -115,3 +116,9 @@ CREATE TABLE reviews(
   FOREIGN KEY (userid) REFERENCES user(userid),
   FOREIGN KEY (tconst) REFERENCES title(tconst)
 )
+
+CREATE TABLE user_gini_cache (
+  userid VARCHAR(100) PRIMARY KEY,
+  gini_index DOUBLE,
+  FOREIGN KEY (userid) REFERENCES user(userid)
+);
