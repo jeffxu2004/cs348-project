@@ -461,7 +461,7 @@ const JWT_SECRET =
               return p.character_name;
             }
           })(),
-        })),
+        }))
       };
     } catch (err) {
       fastify.log.error(err);
