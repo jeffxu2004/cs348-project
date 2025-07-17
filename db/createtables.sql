@@ -22,7 +22,8 @@ CREATE TABLE title (
   numvotes INT,
   average_rating FLOAT,
   runtime INT,
-  release_year INT
+  release_year INT,
+  plot VARCHAR(512)
 );
 
 -- Create genres table  
@@ -115,10 +116,10 @@ CREATE TABLE reviews(
   PRIMARY KEY (userid, tconst),
   FOREIGN KEY (userid) REFERENCES user(userid),
   FOREIGN KEY (tconst) REFERENCES title(tconst)
-)
+);
 
 CREATE TABLE user_gini_cache (
   userid VARCHAR(100) PRIMARY KEY,
-  gini_index DOUBLE,
+  gini_index FLOAT,
   FOREIGN KEY (userid) REFERENCES user(userid)
 );
