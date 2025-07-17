@@ -249,7 +249,7 @@ def main():
         "job",
         "character_name",
     ]
-    #insert_dataframe_to_mysql(principal_df, "principal", config)
+    # insert_dataframe_to_mysql(principal_df, "principal", config)
     
     # creating user table
     user_table = []

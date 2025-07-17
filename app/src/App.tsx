@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import MovieDetailPage from "./MovieDetailPage";
 import EditMovieForm from "./EditMovieForm";
+import ActorDetailPage from "./ActorDetailPage"
+import SharedMoviesPage from "./SharedMoviesPage";
 import "./App.css";
 
 const AuthContext = createContext(null);
@@ -114,11 +116,7 @@ const LoginForm = () => {
     setError("");
     setIsLoading(true);
 
-    console.log("Attempting login with:", { username, password });
-
     const result = await login(username, password);
-
-    console.log("Login result:", result);
 
     if (!result.success) {
       setError(result.error);
@@ -128,84 +126,47 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md shadow-2xl">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
-            <User className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-blue-200">Sign in to your movie account</p>
+    <div className="loading-screen">
+      <div className="login-box">
+        <div className="user-icon-wrapper">
+          <User className="user-icon" />
         </div>
+        <h1>Welcome Back</h1>
+        <p>Sign in to your movie account</p>
 
-        <div className="space-y-6">
-          <div>
-            <label className="block text-blue-200 text-sm font-medium mb-2">
-              Username
-            </label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your username"
-                required
-              />
-            </div>
-          </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            required
+          />
 
-          <div>
-            <label className="block text-blue-200 text-sm font-medium mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-          </div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-              <p className="text-red-200 text-sm">{error}</p>
-            </div>
-          )}
+          {error && <p className="error-message">{error}</p>}
 
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center space-x-2"
-          >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              <>
-                <LogIn className="w-5 h-5" />
-                <span>Sign In</span>
-              </>
-            )}
+          <button type="submit" disabled={isLoading} className="login-button">
+            {isLoading ? "Signing in..." : <><LogIn className="login-icon" /> Sign In</>}
           </button>
-        </div>
+        </form>
 
-        <div className="mt-8 pt-6 border-t border-white/20">
-          <p className="text-blue-200 text-sm text-center mb-4">Demo Users:</p>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-white/5 rounded p-2">
-              <p className="text-blue-300">User: alice</p>
-              <p className="text-blue-300">Pass: passAlice123</p>
-            </div>
-            <div className="bg-white/5 rounded p-2">
-              <p className="text-blue-300">Admin: admin</p>
-              <p className="text-blue-300">Pass: admin</p>
-            </div>
+        <div className="demo-users">
+          <p>Demo Users:</p>
+          <div className="demo-user-credentials">
+            <div>User: alice<br />Pass: passAlice123</div>
+            <div>Admin: admin<br />Pass: admin</div>
           </div>
         </div>
       </div>
@@ -284,81 +245,6 @@ const Header = () => {
   );
 };
 
-const MovieDetail = () => {
-  const { tconst } = useParams(); // get movie id from url
-  const { user } = useAuth();
-  const [movie, setMovie] = useState(null);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/movies/${tconst}`, {
-          credentials: "include",
-        });
-        if (!res.ok) throw new Error("Movie not found");
-        const data = await res.json();
-        setMovie(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMovie();
-  }, [tconst]);
-
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this movie?")) return;
-    try {
-      const res = await fetch(`http://localhost:3000/movies/${tconst}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (res.ok) navigate("/");
-      else alert("Failed to delete");
-    } catch {
-      alert("Server error");
-    }
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (!movie) return <p>Movie not found</p>;
-
-  return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-4">
-        {movie.primary_title} ({movie.release_year})
-      </h2>
-      <p>Votes: {movie.numvotes}</p>
-      <p>Rating: {movie.average_rating.toFixed(1)}</p>
-      <p>Runtime: {movie.runtime} min</p>
-      <p>
-        <strong>Directors:</strong> {movie.directors || "—"}
-      </p>
-      <p>
-        <strong>Writers:</strong> {movie.writers || "—"}
-      </p>
-      <p>
-        <strong>Genres:</strong> {movie.genres || "—"}
-      </p>
-      {user?.isAdmin && (
-        <button
-          onClick={handleDelete}
-          className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 mt-4"
-        >
-          <Trash2 className="w-5 h-5 mr-2" />
-          Delete Movie
-        </button>
-      )}
-      <Link to="/" className="movie-button">
-        ← Back to movies
-      </Link>
-    </div>
-  );
-};
-
 const MovieDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -377,10 +263,9 @@ const MovieDashboard = () => {
     { label: "Most Popular", path: "/movies/most-popular" },
     { label: "Best of This Year", path: "/movies/best-of-year" },
     { label: "Random Picks", path: "/movies/random" },
-    //{ label: 'All Movies', path: '/movies/all' }
   ];
 
-  const [sortPath, setSortPath] = useState("/movies/all");
+  const [sortPath, setSortPath] = useState("/movies/top-rated");
 
   useEffect(() => {
     const loadSortedMovies = async () => {
@@ -569,7 +454,7 @@ const MovieDashboard = () => {
                   <p className="text-gray-600">Year: {movie.release_year}</p>
                   {movie.average_rating && (
                     <p className="text-yellow-600">
-                      ⭐ {movie.average_rating}/10
+                      ⭐ {movie.average_rating.toFixed(1)}/10
                     </p>
                   )}
                 </div>
@@ -731,21 +616,19 @@ const AddMovieForm = ({ onAdded }: { onAdded: () => void }) => {
           { name: "writers", label: "Writer IDs (csv)" },
         ].map(({ name, label, type }) => (
           <div key={name}>
-            <label className="block text-gray-700 mb-1">{label}</label>
+            <label>{label}</label>
             <input
               name={name}
               type={type || "text"}
               value={(form as any)[name]}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required={name === "tconst" || name === "primary_title"}
             />
           </div>
         ))}
-        <div className="md:col-span-2 flex justify-end">
+        <div>
           <button
             type="submit"
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
           >
             <PlusCircle className="w-5 h-5 mr-2" />
             Add Movie
@@ -780,6 +663,8 @@ export default function App() {
         <Routes>
           <Route path="/movies/:tconst" element={<MovieDetailPage />} />
           <Route path="/movies/:tconst/edit" element={<EditMovieForm />} />
+          <Route path="/people/:nconst" element={<ActorDetailPage />} />
+          <Route path="/shared-movies/:actor1/:actor2" element={<SharedMoviesPage />} />
           <Route path="/*" element={<MovieApp />} />
         </Routes>
       </AuthProvider>
