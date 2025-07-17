@@ -440,7 +440,6 @@ const JWT_SECRET =
                 FROM principal pr
                 JOIN people p ON pr.nconst = p.nconst
                 WHERE pr.tconst = ? AND pr.category IN ('actor', 'actress')
-                ORDER BY pr.ordering
             `,
         [tconst]
       );
