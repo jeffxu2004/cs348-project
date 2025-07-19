@@ -1,17 +1,17 @@
 USE movie_app;
 
 -- Insert into title table
-INSERT INTO title (tconst, primary_title, numvotes, average_rating, runtime, release_year) VALUES
-('tt0111161', 'The Shawshank Redemption', 2700000, 9.3, 142, 1994),
-('tt0068646', 'The Godfather', 1900000, 9.2, 175, 1972),
-('tt0468569', 'The Dark Knight', 2600000, 9.0, 152, 2008),
-('tt0071562', 'The Godfather Part II', 1300000, 9.0, 202, 1974),
-('tt0108052', 'Schindler''s List', 1400000, 8.9, 195, 1993),
-('tt0167260', 'The Lord of the Rings: The Return of the King', 1900000, 8.9, 201, 2003),
-('tt0110912', 'Pulp Fiction', 2000000, 8.9, 154, 1994),
-('tt0137523', 'Fight Club', 1900000, 8.8, 139, 1999),
-('tt0120737', 'The Lord of the Rings: The Fellowship of the Ring', 1800000, 8.8, 178, 2001),
-('tt0109830', 'Forrest Gump', 2100000, 8.8, 142, 1994);
+INSERT INTO title (tconst, primary_title, numvotes, average_rating, runtime, release_year, plot) VALUES
+('tt0111161', 'The Shawshank Redemption', 2700000, 9.3, 142, 1994, 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency. A banker convicted of murdering his wife and her lover finds hope and friendship in prison. Drama, hope, friendship, prison, redemption, injustice, perseverance'),
+('tt0068646', 'The Godfather', 1900000, 9.2, 175, 1972, 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son. A powerful mafia family saga exploring loyalty, power, and the American Dream. Crime, family, mafia, power, loyalty, tradition, violence, honor'),
+('tt0468569', 'The Dark Knight', 2600000, 9.0, 152, 2008, 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice. Superhero, chaos, justice, moral dilemma, vigilante, crime fighting, psychological thriller'),
+('tt0071562', 'The Godfather Part II', 1300000, 9.0, 202, 1974, 'The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son Michael expands and tightens his grip on the family crime syndicate. Crime, family saga, power, corruption, legacy, immigrant story, moral decay'),
+('tt0108052', 'Schindler''s List', 1400000, 8.9, 195, 1993, 'In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis. Holocaust, heroism, humanity, sacrifice, historical drama, survival, moral awakening'),
+('tt0167260', 'The Lord of the Rings: The Return of the King', 1900000, 8.9, 201, 2003, 'Gandalf and Aragorn lead the World of Men against Sauron''s army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring. Fantasy, epic, friendship, good vs evil, sacrifice, destiny, courage, adventure'),
+('tt0110912', 'Pulp Fiction', 2000000, 8.9, 154, 1994, 'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption. Crime, nonlinear narrative, dark comedy, violence, redemption, interconnected stories, pop culture'),
+('tt0137523', 'Fight Club', 1900000, 8.8, 139, 1999, 'An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into an anarchist organization. Psychological thriller, identity crisis, consumerism, masculinity, rebellion, anarchy, mental health'),
+('tt0120737', 'The Lord of the Rings: The Fellowship of the Ring', 1800000, 8.8, 178, 2001, 'A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron. Fantasy, adventure, friendship, epic journey, good vs evil, heroism, fellowship'),
+('tt0109830', 'Forrest Gump', 2100000, 8.8, 142, 1994, 'The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75. Drama, historical events, love story, destiny, innocence, American history, life journey');
 
 -- Insert into genres table
 INSERT INTO genres (tconst, genres) VALUES

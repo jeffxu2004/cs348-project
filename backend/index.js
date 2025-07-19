@@ -15,7 +15,10 @@ import analyticsRoutes from "./routes/analytics.js";
 const fastify = Fastify({ logger: true });
 
 // Register plugins
-await fastify.register(dbConnector);
+await fastify.register(import("@fastify/mysql"), {
+    promise: true,
+    connectionString: "mysql://admin:pass@localhost/movie_app",
+});
 
 // Register session plugin for cookies
 await fastify.register(import("@fastify/cookie"), {
