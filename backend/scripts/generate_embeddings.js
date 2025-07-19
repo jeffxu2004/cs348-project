@@ -1,3 +1,5 @@
+// one-time script for embedding the sample data
+
 import mysql from "mysql2/promise";
 import { pipeline } from "@xenova/transformers";
 
