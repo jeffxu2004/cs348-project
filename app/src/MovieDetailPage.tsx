@@ -23,6 +23,7 @@ export default function MovieDetailPage() {
   const [showEdit, setShowEdit] = useState(false);
   const [user, setUser] = useState(null); // to check admin rights
   const [isFavorite, setIsFavorite] = useState(false);
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -33,11 +34,23 @@ export default function MovieDetailPage() {
         setMovie(data);
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoading(false);
       }
     };
+    
+    const fetchSimilarMovies = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/movies/similar/${tconst}`, { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setSimilarMovies(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch similar movies:', err);
+      }
+    };
+    
     fetchMovie();
+    fetchSimilarMovies();
   }, [tconst]);
 
   useEffect(() => {
@@ -104,6 +117,30 @@ export default function MovieDetailPage() {
         <p><strong>Writers:</strong> {movie.writers?.length ? movie.writers.join(", ") : '—'}</p>
         <p><strong>Genres:</strong> {movie.genres?.length ? movie.genres.join(", ") : '—'}</p>
         <ActorList actors={movie.cast} />
+        
+        {/* Similar Movies Section */}
+        {similarMovies.length > 0 && (
+          <div className="section">
+            <h3>Similar movies...</h3>
+            <div className="similar-movies-grid">
+              {similarMovies.slice(0, 5).map((similarMovie: any) => (
+                <div key={similarMovie.tconst} className="similar-movie-item">
+                  <Link 
+                    to={`/movies/${similarMovie.tconst}`} 
+                    className="movie-button"
+                    style={{ textDecoration: 'none', fontSize: '14px' }}
+                  >
+                    {similarMovie.primary_title}
+                  </Link>
+                  <div style={{ fontSize: '12px', color: '#666' }}>
+                    {similarMovie.release_year} • ⭐ {similarMovie.average_rating?.toFixed(1)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
         {user && (
           <div>
             <button onClick={toggleFavorite} aria-label={isFavorite ? "Unfavorite" : "Favorite"}>

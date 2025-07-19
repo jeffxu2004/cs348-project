@@ -70,9 +70,14 @@ export default async function searchRoutes(fastify, options) {
                     VEC_DISTANCE_COSINE(embedding, Vec_FromText(?)) AS similarity_score
                 FROM title t
                 WHERE embedding IS NOT NULL
+                AND VEC_DISTANCE_COSINE(embedding, Vec_FromText(?)) < 0.7
                 ORDER BY VEC_DISTANCE_COSINE(embedding, Vec_FromText(?)) ASC
                 LIMIT 10`,
-                [JSON.stringify(embedding), JSON.stringify(embedding)]
+                [
+                    JSON.stringify(embedding),
+                    JSON.stringify(embedding),
+                    JSON.stringify(embedding),
+                ]
             );
 
             return rows || [];

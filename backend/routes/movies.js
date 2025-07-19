@@ -368,20 +368,20 @@ export default async function movieRoutes(fastify, options) {
         try {
             const [rows] = await fastify.mysql.execute(
                 `SELECT 
-                    t2.tconst,
                     t2.primary_title,
-                    t2.average_rating,
                     t2.release_year,
-                    t2.runtime,
-                    VEC_DISTANCE_COSINE(t2.embedding, t1.embedding) AS similarity_score
+                    t2.average_rating,
+                    t2.numvotes,
+                    t2.tconst,
+                    t2.runtime
                 FROM title t1
                 CROSS JOIN title t2
                 WHERE t1.tconst = ?
                 AND t2.embedding IS NOT NULL 
                 AND t1.embedding IS NOT NULL
                 AND t2.tconst != ?
-                ORDER BY VEC_DISTANCE_COSINE(t2.embedding, t1.embedding) DESC
-                LIMIT 10`,
+                ORDER BY VEC_DISTANCE_COSINE(t2.embedding, t1.embedding) ASC
+                LIMIT 3`,
                 [tconst, tconst]
             );
 
