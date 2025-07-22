@@ -100,6 +100,7 @@ Note these steps assume you have python installed. You may (optionally) have an 
     mariadb -u admin -p < db/insert_gini.sql
     mariadb -u admin -p < db/addfancysearch.sql
     mariadb -u admin -p < db/9.vector.sql
+    mariadb -u admin -p < db/coactors.sql
     node backend/scripts/generate_embeddings.js
     ```
 4. Create indexes to improve performance
