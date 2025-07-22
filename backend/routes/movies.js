@@ -40,6 +40,8 @@ export default async function movieRoutes(fastify, options) {
                         .send({ error: "Movie already exists" });
                 }
 
+                await fastify.mysql.execute("SET @current_admin_id = ?", [request.user.userid]);
+
                 await fastify.mysql.execute(
                     "INSERT INTO title (tconst, primary_title, release_year, runtime, average_rating, numvotes) VALUES (?, ?, ?, ?, ?, ?)",
                     [
@@ -131,6 +133,7 @@ export default async function movieRoutes(fastify, options) {
                 );
 
                 // Finally delete the movie
+                await fastify.mysql.execute("SET @current_admin_id = ?", [request.user.userid]);
                 const [result] = await fastify.mysql.execute(
                     "DELETE FROM title WHERE tconst = ?",
                     [tconst]
@@ -286,6 +289,7 @@ export default async function movieRoutes(fastify, options) {
             }
 
             try {
+                await fastify.mysql.execute("SET @current_admin_id = ?", [request.user.userid]);
                 const [result] = await fastify.mysql.execute(
                     `UPDATE title 
          SET primary_title = ?, average_rating = ?, release_year = ?, runtime = ?, numvotes = ?

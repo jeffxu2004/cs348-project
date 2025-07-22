@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS genres;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS people;
 DROP TABLE IF EXISTS title;
+DROP TABLE IF EXISTS admin_audit_log;
 
 -- Create title table
 CREATE TABLE title (
@@ -123,3 +124,14 @@ CREATE TABLE user_gini_cache (
   gini_index FLOAT,
   FOREIGN KEY (userid) REFERENCES user(userid)
 );
+
+-- Audit log table for admin actions
+CREATE TABLE admin_audit_log (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  admin_id VARCHAR(100) NOT NULL,
+  action_type VARCHAR(50) NOT NULL,
+  tconst VARCHAR(100) NULL,
+  action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  description TEXT
+);
+
