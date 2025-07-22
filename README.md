@@ -8,6 +8,7 @@ CS 348 project. Below are the instructions to run the code locally
 https://mariadb.com/
 ```
 Install MariaDB and then follow the instructions to set up
+Note: you must use a recent version of mariadb 11.8 is what the dataset was tested on.
 
 OPTIONAL: Run the following to set up an admin user
 ```bash
@@ -98,6 +99,8 @@ Note these steps assume you have python installed. You may (optionally) have an 
     ```bash
     mariadb -u admin -p < db/insert_gini.sql
     mariadb -u admin -p < db/addfancysearch.sql
+    mariadb -u admin -p < db/9.vector.sql
+    node backend/scripts/generate_embeddings.js
     ```
 4. Create indexes to improve performance
    ```bash
