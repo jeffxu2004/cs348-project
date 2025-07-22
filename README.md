@@ -38,8 +38,8 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Run the following commands
 
     ```bash
-    mariadb -u root -p < db/createtables.sql
-    mariadb -u root -p < db/populatetables.sql
+    mariadb -u admin -p < db/createtables.sql
+    mariadb -u admin -p < db/populatetables.sql
     ```
 
 2. Run the backend of the application
@@ -79,7 +79,7 @@ Note these steps assume you have python installed. You may (optionally) have an 
     ```
     As an aside before running the python script make sure the database tables and indexes are created
     ```bash
-    mariadb -u root -p < db/createtables.sql
+    mariadb -u admin -p < db/createtables.sql
     ```
 
 2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
@@ -96,12 +96,12 @@ Note these steps assume you have python installed. You may (optionally) have an 
     Update the username and password on line 10 and 11
 3. Setup for advance features
     ```bash
-    mariadb -u root -p db/insert_gini.sql
-    mariadb -u root -p db/addfancysearch.sql
+    mariadb -u admin -p < db/insert_gini.sql
+    mariadb -u admin -p < db/addfancysearch.sql
     ```
 4. Create indexes to improve performance
    ```bash
-    mariadb -u root -p < db/index.sql
+    mariadb -u admin -p < db/index.sql
    ```
 
 ## Feautes Implemented

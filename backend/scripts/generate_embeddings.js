@@ -2,6 +2,7 @@
 
 import mysql from "mysql2/promise";
 import { pipeline } from "@xenova/transformers";
+import cliProgress from 'cli-progress';
 
 const connection = await mysql.createConnection({
     host: "localhost",
@@ -19,7 +20,6 @@ async function getEmbeddingPipeline() {
             "feature-extraction",
             "Xenova/all-MiniLM-L6-v2"
         );
-        console.log("Model loaded!");
     }
     return embeddingPipeline;
 }
@@ -38,24 +38,25 @@ async function generateAndInsertEmbeddings() {
         );
 
         console.log(`Found ${movies.length} movies to process`);
-
+        const progressBar = new cliProgress.SingleBar({
+            format: 'Processing Movies |{bar}| {percentage}% | {value}/{total} | Current: {movie}',
+            barCompleteChar: '\u2588',
+            barIncompleteChar: '\u2591',
+            hideCursor: true
+        });
         // only do 10 movies for now
-        let len = Math.min(10, movies.length);
+        //let len = Math.min(10, movies.length);
+        let len = movies.length
+        progressBar.start(len, 0, { movie: 'Starting...' });
         for (let i = 0; i < len; i++) {
             const movie = movies[i];
-            console.log(
-                `Processing ${i + 1}/${movies.length}: ${movie.primary_title}`
-            );
 
             // Combine title and plot for better embeddings
             const textToEmbed = `${movie.primary_title}. ${movie.plot}`;
 
             // Generate embedding
             const embedding = await generateEmbedding(textToEmbed);
-
-            console.log(
-                `Generated embedding with ${embedding.length} dimensions`
-            );
+            progressBar.update(i, {movie: movie.primary_title})
 
             if (embedding.length !== 384) {
                 console.log(
@@ -67,9 +68,6 @@ async function generateAndInsertEmbeddings() {
             await connection.execute(
                 "UPDATE title SET embedding = Vec_FromText(?) WHERE tconst = ?",
                 [JSON.stringify(embedding), movie.tconst]
-            );
-            console.log(
-                `✓ Updated ${movie.tconst} with embedding (JSON format)`
             );
         }
 
