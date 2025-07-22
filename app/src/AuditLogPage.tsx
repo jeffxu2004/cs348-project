@@ -30,10 +30,10 @@ const AuditLogPage = () => {
         <tbody>
           {logs.map((log, i) => (
             <tr key={i}>
-              <td className="border px-4 py-2">{new Date(log.timestamp).toLocaleString()}</td>
+              <td className="border px-4 py-2">{new Date(log.action_time).toLocaleString()}</td>
               <td className="border px-4 py-2">{log.username}</td>
-              <td className="border px-4 py-2">{log.action}</td>
-              <td className="border px-4 py-2 whitespace-pre-wrap">{log.details}</td>
+              <td className="border px-4 py-2">{log.action_type}</td>
+              <td className="border px-4 py-2 whitespace-pre-wrap">{log.description}</td>
             </tr>
           ))}
         </tbody>
