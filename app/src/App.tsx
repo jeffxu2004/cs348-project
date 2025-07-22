@@ -444,7 +444,9 @@ const MovieDashboard = () => {
                   >
                     <div>
                       <h4 className="font-medium text-gray-800">
+                        <Link to={`/movies/${movie.tconst}`} className="movie-button">
                         {movie.primary_title}
+                        </Link>
                       </h4>
                       <p className="text-gray-600">{movie.release_year}</p>
                     </div>

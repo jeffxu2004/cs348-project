@@ -24,6 +24,111 @@ export default function MovieDetailPage() {
   const [user, setUser] = useState(null); // to check admin rights
   const [isFavorite, setIsFavorite] = useState(false);
   const [similarMovies, setSimilarMovies] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [userReview, setUserReview] = useState('');
+  const [isEditingReview, setIsEditingReview] = useState(false);
+  const [hasExistingReview, setHasExistingReview] = useState(false);
+
+
+  useEffect(() => {
+    // Fetch all reviews for this movie
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/reviews/${tconst}`, { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setReviews(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+      }
+    };
+
+    // Fetch user's own review if logged in
+    const fetchUserReview = async () => {
+      if (user) {
+        try {
+          const res = await fetch(`http://localhost:3000/reviews/${tconst}/my-review`, { credentials: 'include' });
+          if (res.ok) {
+            const data = await res.json();
+            setUserReview(data.content);
+            setHasExistingReview(true);
+          } else {
+            setUserReview('');
+            setHasExistingReview(false);
+          }
+        } catch (err) {
+          // User doesn't have a review yet, that's fine
+          setUserReview('');
+          setHasExistingReview(false);
+        }
+      }
+    };
+
+    fetchReviews();
+    fetchUserReview();
+  }, [tconst, user]);
+
+  // Add these handler functions after the existing handler functions
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!userReview.trim()) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ tconst, content: userReview.trim() }),
+      });
+
+      if (res.ok) {
+        setIsEditingReview(false);
+        setHasExistingReview(true);
+        // Refresh reviews
+        const reviewsRes = await fetch(`http://localhost:3000/reviews/${tconst}`, { credentials: 'include' });
+        if (reviewsRes.ok) {
+          const data = await reviewsRes.json();
+          setReviews(data);
+        }
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to save review');
+      }
+    } catch (err) {
+      alert('Failed to save review');
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    if (!window.confirm('Are you sure you want to delete your review?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/reviews/${tconst}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        setUserReview('');
+        setIsEditingReview(false);
+        setHasExistingReview(false);
+        // Refresh reviews
+        const reviewsRes = await fetch(`http://localhost:3000/reviews/${tconst}`, { credentials: 'include' });
+        if (reviewsRes.ok) {
+          const data = await reviewsRes.json();
+          setReviews(data);
+        }
+      } else {
+        alert('Failed to delete review');
+      }
+    } catch (err) {
+      alert('Failed to delete review');
+    }
+  };
+
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -140,6 +245,110 @@ export default function MovieDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Reviews Section */}
+        <div className="section">
+          <h3>Reviews</h3>
+          
+          {user && (
+            <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #ddd', borderRadius: '8px' }}>
+              {!isEditingReview && hasExistingReview ? (
+                <div>
+                  <h4>Your Review:</h4>
+                  <p style={{ backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '4px' }}>
+                    {userReview}
+                  </p>
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <button 
+                      onClick={() => setIsEditingReview(true)}
+                      style={{ marginRight: '0.5rem' }}
+                    >
+                      Edit Review
+                    </button>
+                    <button 
+                      onClick={handleDeleteReview}
+                      style={{ backgroundColor: '#dc3545', color: 'white' }}
+                    >
+                      Delete Review
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleReviewSubmit}>
+                  <h4>{hasExistingReview ? 'Edit Your Review:' : 'Write a Review:'}</h4>
+                  <textarea
+                    value={userReview}
+                    onChange={(e) => setUserReview(e.target.value)}
+                    placeholder="Share your thoughts about this movie..."
+                    rows={4}
+                    maxLength={512}
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem', 
+                      border: '1px solid #ccc', 
+                      borderRadius: '4px',
+                      resize: 'vertical'
+                    }}
+                  />
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.9em', color: '#666' }}>
+                    {userReview.length}/512 characters
+                  </div>
+                  <div style={{ marginTop: '1rem' }}>
+                    <button 
+                      type="submit"
+                      disabled={!userReview.trim()}
+                      style={{ marginRight: '0.5rem' }}
+                    >
+                      {hasExistingReview && !isEditingReview ? 'Update Review' : 'Submit Review'}
+                    </button>
+                    {isEditingReview && (
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          setIsEditingReview(false);
+                          // Reset to original review if user cancels editing
+                          fetch(`http://localhost:3000/reviews/${tconst}/my-review`, { credentials: 'include' })
+                            .then(res => res.ok ? res.json() : { content: '' })
+                            .then(data => setUserReview(data.content || ''));
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {reviews.length > 0 ? (
+            <div>
+              <h4>All Reviews ({reviews.length}):</h4>
+              {reviews.map((review, index) => (
+                <div 
+                  key={`${review.userid}-${index}`} 
+                  style={{ 
+                    marginBottom: '1rem', 
+                    padding: '1rem', 
+                    backgroundColor: '#f9f9f9', 
+                    borderRadius: '8px',
+                    borderLeft: user?.userid === review.userid ? '4px solid #007bff' : 'none'
+                  }}
+                >
+                  <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                    {review.username}
+                    {user?.userid === review.userid && (
+                      <span style={{ color: '#007bff', fontSize: '0.9em' }}> (You)</span>
+                    )}
+                  </div>
+                  <p style={{ margin: '0', lineHeight: '1.5' }}>{review.content}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ color: '#666', fontStyle: 'italic' }}>No reviews yet. Be the first to review this movie!</p>
+          )}
+        </div>
         
         {user && (
           <div>

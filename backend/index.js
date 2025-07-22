@@ -11,7 +11,7 @@ import favoritesRoutes from "./routes/favorites.js";
 import searchRoutes from "./routes/search.js";
 import peopleRoutes from "./routes/people.js";
 import analyticsRoutes from "./routes/analytics.js";
-import auditRoutes from "./routes/auditlog.js";
+import reviewsRoutes from "./routes/review.js"
 
 const fastify = Fastify({ logger: true });
 
@@ -40,7 +40,7 @@ await fastify.register(favoritesRoutes);
 await fastify.register(searchRoutes);
 await fastify.register(peopleRoutes);
 await fastify.register(analyticsRoutes);
-await fastify.register(auditRoutes);
+await fastify.register(reviewsRoutes);
 
 fastify.get("/", async function (request, reply) {
     const [rows] = await fastify.mysql.query("SELECT * FROM title LIMIT 5");
