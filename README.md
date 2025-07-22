@@ -8,6 +8,7 @@ CS 348 project. Below are the instructions to run the code locally
 https://mariadb.com/
 ```
 Install MariaDB and then follow the instructions to set up
+Note: you must use a recent version of mariadb 11.8 is what the dataset was tested on.
 
 OPTIONAL: Run the following to set up an admin user
 ```bash
@@ -38,8 +39,8 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Run the following commands
 
     ```bash
-    mariadb -u root -p < db/createtables.sql
-    mariadb -u root -p < db/populatetables.sql
+    mariadb -u admin -p < db/createtables.sql
+    mariadb -u admin -p < db/populatetables.sql
     ```
 
 2. Run the backend of the application
@@ -79,7 +80,7 @@ Note these steps assume you have python installed. You may (optionally) have an 
     ```
     As an aside before running the python script make sure the database tables and indexes are created
     ```bash
-    mariadb -u root -p < db/createtables.sql
+    mariadb -u admin -p < db/createtables.sql
     ```
 
 2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
@@ -96,12 +97,14 @@ Note these steps assume you have python installed. You may (optionally) have an 
     Update the username and password on line 10 and 11
 3. Setup for advance features
     ```bash
-    mariadb -u root -p db/insert_gini.sql
-    mariadb -u root -p db/addfancysearch.sql
+    mariadb -u admin -p < db/insert_gini.sql
+    mariadb -u admin -p < db/addfancysearch.sql
+    mariadb -u admin -p < db/9.vector.sql
+    node backend/scripts/generate_embeddings.js
     ```
 4. Create indexes to improve performance
    ```bash
-    mariadb -u root -p < db/index.sql
+    mariadb -u admin -p < db/index.sql
    ```
 
 ## Feautes Implemented

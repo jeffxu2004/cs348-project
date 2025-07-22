@@ -249,6 +249,7 @@ const Header = () => {
 const MovieDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchIn, setSearchIn]     = useState("title");
+  const [searchMode, setSearchMode] = useState("normal"); // "normal" or "semantic"
   const [searchResults, setSearchResults] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -327,11 +328,21 @@ const MovieDashboard = () => {
 
     setLoading(true);
     try {
-      const url = new URL("http://localhost:3000/search");
-      url.searchParams.set("q", searchQuery);
-      url.searchParams.set("searchIn", searchIn);
+      let response;
+      
+      if (searchMode === "semantic") {
+        // Use semantic search endpoint
+        const url = new URL("http://localhost:3000/search/semantic");
+        url.searchParams.set("q", searchQuery);
+        response = await fetch(url.toString());
+      } else {
+        // Use normal search endpoint
+        const url = new URL("http://localhost:3000/search");
+        url.searchParams.set("q", searchQuery);
+        url.searchParams.set("searchIn", searchIn);
+        response = await fetch(url.toString());
+      }
 
-      const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
         setSearchResults(data);
@@ -376,38 +387,53 @@ const MovieDashboard = () => {
             Search Movies
           </h2>
           <div className="flex space-x-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="flex-1">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch(e)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Search for movies..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder={searchMode === "normal" ? "Search for movies..." : "Describe the movie you're looking for..."}
               />
             </div>
-            <select
-              value={searchIn}
-              onChange={(e) => setSearchIn(e.target.value)}
-              className="border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <button
+              onClick={() => setSearchMode(searchMode === "normal" ? "semantic" : "normal")}
+              className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              title={searchMode === "normal" ? "Switch to semantic search" : "Switch to normal search"}
             >
-              <option value="title">Title only</option>
-              <option value="full">Title + Plot</option>
-            </select>
+              {searchMode === "normal" ? (
+                <Search className="w-5 h-5" />
+              ) : (
+                <span className="text-lg">✨</span>
+              )}
+            </button>
+            {searchMode === "normal" && (
+              <select
+                value={searchIn}
+                onChange={(e) => setSearchIn(e.target.value)}
+                className="border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="title">Title only</option>
+                <option value="full">Title + Plot</option>
+              </select>
+            )}
             <button
               onClick={handleSearch}
               disabled={loading}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? "Searching..." : "Search"}
+              {loading ? "Searching..." : (searchMode === "normal" ? "Search" : "Find Similar")}
             </button>
           </div>
 
           {searchResults.length > 0 && (
             <div className="mt-6">
               <h3 className="text-lg font-semibold text-gray-700 mb-3">
-                Search Results
+                {searchMode === "normal" ? "Search Results" : "Semantic Search Results"} 
+                <span className="ml-2 text-sm text-gray-500">
+                  ({searchMode === "normal" ? "🔍 Traditional" : "✨ AI-powered"})
+                </span>
               </h3>
               <div className="grid gap-4">
                 {searchResults.map((movie) => (
