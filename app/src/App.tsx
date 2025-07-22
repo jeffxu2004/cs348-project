@@ -21,6 +21,7 @@ import MovieDetailPage from "./MovieDetailPage";
 import EditMovieForm from "./EditMovieForm";
 import ActorDetailPage from "./ActorDetailPage"
 import SharedMoviesPage from "./SharedMoviesPage";
+import AuditLogPage from "./AuditLogPage";
 import "./App.css";
 
 const AuthContext = createContext(null);
@@ -471,6 +472,16 @@ const MovieDashboard = () => {
           )}
         </div>
 
+        {user?.isAdmin && (
+          <div className="mb-4">
+            <Link to="/audit-log">
+              <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">
+                View Audit Log
+              </button>
+            </Link>
+          </div>
+        )}
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Your Favorites
@@ -705,6 +716,7 @@ export default function App() {
           <Route path="/people/:nconst" element={<ActorDetailPage />} />
           <Route path="/shared-movies/:actor1/:actor2" element={<SharedMoviesPage />} />
           <Route path="/*" element={<MovieApp />} />
+          <Route path="/audit-log" element={<AuditLogPage />} />
         </Routes>
       </AuthProvider>
     </Router>
