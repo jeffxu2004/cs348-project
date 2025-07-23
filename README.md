@@ -32,7 +32,7 @@ git clone https://github.com/jeffxu2004/cs348-project.git
 
 1. Setting up the database.
     You will need to pass in your mysql database username and password.
-    Change  `root` to the username.
+    Change `root` to the username.
 
 
     After running both commands you will be prompted to enter your password.
