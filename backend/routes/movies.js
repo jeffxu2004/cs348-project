@@ -346,10 +346,10 @@ export default async function movieRoutes(fastify, options) {
         const currentYear = new Date().getFullYear();
         const [rows] = await fastify.mysql.query(
             `SELECT primary_title, release_year, average_rating, numvotes, tconst, runtime
-       FROM title
-       WHERE release_year = ? AND numvotes > 5000
-       ORDER BY average_rating DESC
-       LIMIT 50;`,
+            FROM title
+            WHERE release_year = ? AND numvotes > 5000
+            ORDER BY average_rating DESC
+            LIMIT 50;`,
             [currentYear]
         );
         return rows;
