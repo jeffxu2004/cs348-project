@@ -218,7 +218,7 @@ export default function MovieDetailPage() {
         <h2>{movie.primary_title} ({movie.release_year})</h2>
         {movie?.plot != null ? <p><strong>Plot:</strong> {movie.plot}</p> : null}
         <p><strong>Runtime:</strong> {movie.runtime} min</p>
-        <p><strong>Rating:</strong> {movie.average_rating} ({movie.numvotes} votes)</p>
+        <p><strong>Rating:</strong> {movie.average_rating.toFixed(2)} ({movie.numvotes} votes)</p>
         <p><strong>Directors:</strong> {movie.directors?.length ? movie.directors.join(", ") : '—'}</p>
         <p><strong>Writers:</strong> {movie.writers?.length ? movie.writers.join(", ") : '—'}</p>
         <p><strong>Genres:</strong> {movie.genres?.length ? movie.genres.join(", ") : '—'}</p>
@@ -298,7 +298,7 @@ export default function MovieDetailPage() {
                 </div>
               ) : (
                 <form onSubmit={handleReviewSubmit}>
-                  <h4 style={{ color: '#333', marginBottom: '0.5rem' }}>
+                  <h4 style={{ marginBottom: '0.5rem' }}>
                     {hasExistingReview ? 'Edit Your Review:' : 'Write a Review:'}
                   </h4>
                   <textarea
