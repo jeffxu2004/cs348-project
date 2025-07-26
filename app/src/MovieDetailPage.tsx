@@ -216,6 +216,7 @@ export default function MovieDetailPage() {
     <div className="container">
       <div className="section">
         <h2>{movie.primary_title} ({movie.release_year})</h2>
+        {movie?.plot != null ? <p><strong>Plot:</strong> {movie.plot}</p> : null}
         <p><strong>Runtime:</strong> {movie.runtime} min</p>
         <p><strong>Rating:</strong> {movie.average_rating} ({movie.numvotes} votes)</p>
         <p><strong>Directors:</strong> {movie.directors?.length ? movie.directors.join(", ") : '—'}</p>
