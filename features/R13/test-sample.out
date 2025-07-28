@@ -1,0 +1,4 @@
+nconst	name	sharedMoviesCount
+nm0000209	Tim Robbins	1
+tconst	primary_title	release_year	actor1_name	actor2_name
+tt0111161	The Shawshank Redemption	1994	Morgan Freeman	Tim Robbins
