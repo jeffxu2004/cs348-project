@@ -70,7 +70,7 @@ async function generateAndInsertEmbeddings() {
                 [JSON.stringify(embedding), movie.tconst]
             );
         }
-
+        progressBar.stop();
         console.log("All embeddings generated successfully!");
     } catch (error) {
         console.error("Error:", error);

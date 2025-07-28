@@ -244,6 +244,7 @@ export default async function movieRoutes(fastify, options) {
            t.average_rating,
            t.runtime,
            t.release_year,
+           t.plot,
            GROUP_CONCAT(DISTINCT pd.name SEPARATOR ', ') AS directors,
            GROUP_CONCAT(DISTINCT pw.name SEPARATOR ', ') AS writers,
            GROUP_CONCAT(DISTINCT g.genres SEPARATOR ', ') AS genres

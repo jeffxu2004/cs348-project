@@ -474,7 +474,7 @@ const MovieDashboard = () => {
           )}
         </div>
 
-        {user?.isAdmin && (
+        {user?.isAdmin ? (
           <div className="mb-4">
             <Link to="/audit-log">
               <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">
@@ -482,7 +482,7 @@ const MovieDashboard = () => {
               </button>
             </Link>
           </div>
-        )}
+        ) : null}
 
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">

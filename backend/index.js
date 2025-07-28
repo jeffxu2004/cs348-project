@@ -12,7 +12,7 @@ import searchRoutes from "./routes/search.js";
 import peopleRoutes from "./routes/people.js";
 import analyticsRoutes from "./routes/analytics.js";
 import reviewsRoutes from "./routes/review.js"
-
+import auditRoutes from "./routes/auditlog.js";
 const fastify = Fastify({ logger: true });
 
 // Register plugins
@@ -41,6 +41,7 @@ await fastify.register(searchRoutes);
 await fastify.register(peopleRoutes);
 await fastify.register(analyticsRoutes);
 await fastify.register(reviewsRoutes);
+await fastify.register(auditRoutes);
 
 fastify.get("/", async function (request, reply) {
     const [rows] = await fastify.mysql.query("SELECT * FROM title LIMIT 5");

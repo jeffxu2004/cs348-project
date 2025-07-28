@@ -216,8 +216,9 @@ export default function MovieDetailPage() {
     <div className="container">
       <div className="section">
         <h2>{movie.primary_title} ({movie.release_year})</h2>
+        {movie?.plot != null ? <p><strong>Plot:</strong> {movie.plot}</p> : null}
         <p><strong>Runtime:</strong> {movie.runtime} min</p>
-        <p><strong>Rating:</strong> {movie.average_rating} ({movie.numvotes} votes)</p>
+        <p><strong>Rating:</strong> {movie.average_rating.toFixed(2)} ({movie.numvotes} votes)</p>
         <p><strong>Directors:</strong> {movie.directors?.length ? movie.directors.join(", ") : '—'}</p>
         <p><strong>Writers:</strong> {movie.writers?.length ? movie.writers.join(", ") : '—'}</p>
         <p><strong>Genres:</strong> {movie.genres?.length ? movie.genres.join(", ") : '—'}</p>
@@ -246,7 +247,7 @@ export default function MovieDetailPage() {
           </div>
         )}
 
-        {/* Reviews Section */}
+  {/* Reviews Section */}
         <div className="section">
           <h3>Reviews</h3>
           
@@ -254,20 +255,42 @@ export default function MovieDetailPage() {
             <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #ddd', borderRadius: '8px' }}>
               {!isEditingReview && hasExistingReview ? (
                 <div>
-                  <h4>Your Review:</h4>
-                  <p style={{ backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '4px' }}>
+                  <h4 style={{marginBottom: '0.5rem' }}>Your Review:</h4>
+                  <p style={{ 
+                    backgroundColor: '#f5f5f5', 
+                    padding: '1rem', 
+                    borderRadius: '4px',
+                    color: '#333',
+                    lineHeight: '1.5',
+                    margin: '0 0 0.5rem 0'
+                  }}>
                     {userReview}
                   </p>
                   <div style={{ marginTop: '0.5rem' }}>
                     <button 
                       onClick={() => setIsEditingReview(true)}
-                      style={{ marginRight: '0.5rem' }}
+                      style={{ 
+                        marginRight: '0.5rem',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
                     >
                       Edit Review
                     </button>
                     <button 
                       onClick={handleDeleteReview}
-                      style={{ backgroundColor: '#dc3545', color: 'white' }}
+                      style={{ 
+                        backgroundColor: '#dc3545', 
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
                     >
                       Delete Review
                     </button>
@@ -275,7 +298,9 @@ export default function MovieDetailPage() {
                 </div>
               ) : (
                 <form onSubmit={handleReviewSubmit}>
-                  <h4>{hasExistingReview ? 'Edit Your Review:' : 'Write a Review:'}</h4>
+                  <h4 style={{ marginBottom: '0.5rem' }}>
+                    {hasExistingReview ? 'Edit Your Review:' : 'Write a Review:'}
+                  </h4>
                   <textarea
                     value={userReview}
                     onChange={(e) => setUserReview(e.target.value)}
@@ -287,7 +312,10 @@ export default function MovieDetailPage() {
                       padding: '0.5rem', 
                       border: '1px solid #ccc', 
                       borderRadius: '4px',
-                      resize: 'vertical'
+                      resize: 'vertical',
+                      fontSize: '14px',
+                      color: '#333',
+                      backgroundColor: '#fff'
                     }}
                   />
                   <div style={{ marginTop: '0.5rem', fontSize: '0.9em', color: '#666' }}>
@@ -297,7 +325,15 @@ export default function MovieDetailPage() {
                     <button 
                       type="submit"
                       disabled={!userReview.trim()}
-                      style={{ marginRight: '0.5rem' }}
+                      style={{ 
+                        marginRight: '0.5rem',
+                        backgroundColor: !userReview.trim() ? '#ccc' : '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '4px',
+                        cursor: !userReview.trim() ? 'not-allowed' : 'pointer'
+                      }}
                     >
                       {hasExistingReview && !isEditingReview ? 'Update Review' : 'Submit Review'}
                     </button>
@@ -311,6 +347,14 @@ export default function MovieDetailPage() {
                             .then(res => res.ok ? res.json() : { content: '' })
                             .then(data => setUserReview(data.content || ''));
                         }}
+                        style={{
+                          backgroundColor: '#6c757d',
+                          color: 'white',
+                          border: 'none',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '4px',
+                          cursor: 'pointer'
+                        }}
                       >
                         Cancel
                       </button>
@@ -323,7 +367,7 @@ export default function MovieDetailPage() {
 
           {reviews.length > 0 ? (
             <div>
-              <h4>All Reviews ({reviews.length}):</h4>
+              <h4 style={{ marginBottom: '1rem' }}>All Reviews ({reviews.length}):</h4>
               {reviews.map((review, index) => (
                 <div 
                   key={`${review.userid}-${index}`} 
@@ -332,21 +376,36 @@ export default function MovieDetailPage() {
                     padding: '1rem', 
                     backgroundColor: '#f9f9f9', 
                     borderRadius: '8px',
-                    borderLeft: user?.userid === review.userid ? '4px solid #007bff' : 'none'
+                    borderLeft: user?.userid === review.userid ? '4px solid #007bff' : '4px solid transparent',
+                    border: '1px solid #e9ecef'
                   }}
                 >
-                  <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                  <div style={{ 
+                    fontWeight: 'bold', 
+                    marginBottom: '0.5rem',
+                    color: '#333',
+                    fontSize: '14px'
+                  }}>
                     {review.username}
                     {user?.userid === review.userid && (
-                      <span style={{ color: '#007bff', fontSize: '0.9em' }}> (You)</span>
+                      <span style={{ color: '#007bff', fontSize: '0.9em', fontWeight: 'normal' }}> (You)</span>
                     )}
                   </div>
-                  <p style={{ margin: '0', lineHeight: '1.5' }}>{review.content}</p>
+                  <p style={{ 
+                    margin: '0', 
+                    lineHeight: '1.5',
+                    color: '#333',
+                    fontSize: '14px'
+                  }}>
+                    {review.content}
+                  </p>
                 </div>
               ))}
             </div>
           ) : (
-            <p style={{ color: '#666', fontStyle: 'italic' }}>No reviews yet. Be the first to review this movie!</p>
+            <p style={{ color: '#777', fontStyle: 'italic', fontSize: '14px' }}>
+              No reviews yet. Be the first to review this movie!
+            </p>
           )}
         </div>
         
