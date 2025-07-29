@@ -1,2 +1,9 @@
-userid	tconst	content
-u1	tt0068646	this movie rocked! i really enjoyed frame #3193
+-- getting all the reviews for a movie
+userid	content	username
+a01	I would recomend to friends	admin
+u00	I do no see the hype.	alice
+u1	this movie rocked! i really enjoyed frame #3193	jason49u1
+
+-- getting the reviews for a specific movie from a specific user
+content
+this movie rocked! i really enjoyed frame #3193
