@@ -39,8 +39,8 @@ git clone https://github.com/jeffxu2004/cs348-project.git
     Run the following commands
 
     ```bash
-    mariadb -u admin -p < db/createtables.sql
-    mariadb -u admin -p < db/populatetables.sql
+    mariadb -u admin -p < db/1.createtables.sql 
+    mariadb -u admin -p < db/2.populatetables.sql
     ```
 
 2. Run the backend of the application
@@ -80,7 +80,7 @@ Note these steps assume you have python installed. You may (optionally) have an 
     ```
     As an aside before running the python script make sure the database tables and indexes are created
     ```bash
-    mariadb -u admin -p < db/createtables.sql
+    mariadb -u admin -p < db/1.createtables.sql
     ```
 
 2. run the script (Caution: it may take a while to run but it prints what is happening at each step)
@@ -97,40 +97,64 @@ Note these steps assume you have python installed. You may (optionally) have an 
     Update the username and password on line 10 and 11
 3. Setup for advance features
     ```bash
-    mariadb -u admin -p < db/insert_gini.sql
-    mariadb -u admin -p < db/addfancysearch.sql
-    mariadb -u admin -p < db/9.vector.sql
+    mariadb -u admin -p < db/4.addfancysearch.sql
+    mariadb -u admin -p < db/5.index.sq
+    mariadb -u admin -p < db/6.insert_gini.sql
+    mariadb -u admin -p < db/7.vector.sql
+    mariadb -u admin -p < db/8.triggers.sql
     mariadb -u admin -p < db/coactors.sql
     node backend/scripts/generate_embeddings.js
     ```
-4. Create indexes to improve performance
-   ```bash
-    mariadb -u admin -p < db/index.sql
-   ```
 
 ## Feautes Implemented
 
 
-1. User login (Milestone 1)
+1. User login and favorites(Milestone 1)
     can be found in
     ```
-    app/src/App.tsx
-    backend/index.js
+    backend/routes/auth.js
+    backend/routes/favorites.js
     ```
 2. Movie Overview (Milestone 1)
     ```
-    app/src/App.tsx
-    backend/index.js
+    backend/routes/movies.js
     ```
 3. Main page with common sorting tabs (Milestone 2)
     ```
-    app/src/App.tsx
-    backend/index.js
+    backend/routes/movies.js
     ```
 4. Modify Movies
     ```
-    app/src/App.tsx
-    backend/index.js
-    app/src/EditMovieForm.tsx
-    app/src/MovieDetailPage.tsx
+    backend/routes/movies.js
+    ```
+
+5. Reviews for movies
+    ```
+    backend/routes/review.js
+    ```
+
+6. Genres diversity score
+    ```
+    backend/routes/analytics.js
+    ```
+
+7. Text Search
+    ```
+    backend/routes/search.js
+    ```
+
+8. Actor comparison
+    ```
+    backend/routes/people.js
+    ```
+
+9. Semantic similarity
+    ```
+    backend/routes/search.js
+    backend/routes/movies.js
+    ```
+
+10. Admin logging
+    ```
+    backend/routes/auditlog.js
     ```
