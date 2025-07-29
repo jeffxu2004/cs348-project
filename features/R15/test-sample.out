@@ -1,0 +1,6 @@
+tconst	primary_title	numvotes	average_rating	runtime	release_year	plot	embedding
+tt0000000	Test movie	10	9.3	100	2002	Two imprisoned men bond over life	NULL
+id	admin_id	action_type	tconst	action_time	description	username
+12	a1	INSERT	tt0000000	2025-07-29 18:00:51	Inserted movie Test movie	admin
+13	a1	UPDATE	tt0000000	2025-07-29 18:00:51	Updated movie Test movie	admin
+14	a1	DELETE	tt0000000	2025-07-29 18:00:51	Deleted movie Test movie	admin
