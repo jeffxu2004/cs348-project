@@ -1,2 +1,33 @@
-tconst	primary_title	numvotes	average_rating	runtime	release_year	directors	writers	genres
-tt0072308	The Towering Inferno	50719	7	165	1974	John Guillermin	Frank M. Robinson, Richard Martin Stern, Stirling Silliphant, Thomas N. Scortia	Action, Drama, Thriller
+-- movie information
+tconst	primary_title	numvotes	average_rating	runtime	release_year	plot
+tt0072308	The Towering Inferno	50819	7	165	1974	At the opening party of a colossal, but poorly constructed, office building, a massive fire breaks out that threatens to destroy the tower and everyone in it.
+
+-- genres information
+genres
+Action
+Drama
+Thriller
+
+-- director
+name
+John Guillermin
+
+- writer
+name
+Frank M. Robinson
+Thomas N. Scortia
+Stirling Silliphant
+Richard Martin Stern
+
+-- principal
+nconst	name	character_name
+nm0000001	Fred Astaire	["Harlee Claiborne"]
+nm0000034	William Holden	["Jim Duncan"]
+nm0000056	Paul Newman	["Doug Roberts"]
+nm0000328	Richard Chamberlain	["Simmons"]
+nm0000537	Steve McQueen	["Chief O'Hallorhan"]
+nm0001159	Faye Dunaway	["Susan"]
+nm0001740	O.J. Simpson	["Jernigan"]
+nm0001816	Robert Vaughn	["Senator Parker"]
+nm0086806	Susan Blakely	["Patty"]
+nm0428354	Jennifer Jones	["Lisolette"]
