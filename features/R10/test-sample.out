@@ -1,2 +1,6 @@
-userid  tconst     content
-user0   tt0068646  this movie rocked! i really enjoyed frame #3193
+userid	content	username
+u1	this movie rocked! i really enjoyed frame #3193	alice
+u2	I would recomend to friends	bob
+u3	I do no see the hype.	charlie
+content
+this movie rocked! i really enjoyed frame #3193
