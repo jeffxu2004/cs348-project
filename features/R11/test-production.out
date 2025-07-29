@@ -1,0 +1,15 @@
+-- initial diversity score
+userid	gini_index
+u41571	1.7014
+
+-- score after adding Pulp Fiction to the user's favorite list
+userid	gini_index
+u41571	1.95829
+
+-- score after removing Pulp Fiction to the user's favorite list
+userid	gini_index
+u41571	1.7014
+
+-- percentile of a particular score
+percentile
+10.43

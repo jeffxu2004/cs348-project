@@ -446,7 +446,7 @@ export default function MovieDetailPage() {
           movie={movie}
           onSave={() => {
             setShowEdit(false);
-            fetch(`http://localhost:3000/movies/${tconst}`, { credentials: "include" })
+            fetch(`http://localhost:3000/movie/${tconst}`, { credentials: "include" })
               .then((res) => res.json())
               .then(setMovie);
           }}

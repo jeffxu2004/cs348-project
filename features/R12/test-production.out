@@ -1,0 +1,42 @@
+-- Search with plot
+
+tconst	primary_title	numvotes	average_rating	plot	relevance
+tt0068000	Snake Fist Fighter	2284	5.1	A old beggar from the woods secretly teaches Chien Fu kung fu as he can't afford regular classes and his "dad" doesn't want him fighting. He grows up, works as waiter and ends up fighting men from his town's crime syndicate.	23.878990173339844
+tt0107316	Kill Zone	233	4.2	An American colonel will pay any price to defeat the Viet Cong. When his unauthorized fighting force in Cambodia is discovered, he becomes a one man army, fighting a war of his own for a ...	20.154876708984375
+tt0140859	Bloodfight	697	4.6	Years after retiring from the world of free fighting martial arts, a man returns to the deadly world of fighting after his best student is killed in the tournament.	20.154876708984375
+tt0365194	Fighting Fish	345	3.6	Fighting Fish is the first martial arts film produced and set in the Netherlands, about a young Chinese man from Hong-Kong, who travels to the west when he hears that his brother was killed...	20.154876708984375
+tt2611626	Force of Execution	3783	4.3	A crime boss sends his top man to kill a prisoner. He gets the wrong man and pays the price. 6 months later he's back on his feet. His ex boss is now being squeezed out by Ice Man, who's responsible for the "wrong man" deal.	18.38827133178711
+tt0021861	Fighting Caravans	765	5.7	A young frontier scout helps guide a freight wagon train across the country, fighting off Indians and evil traders, while his two crusty companions try and save him from falling in love.	17.222043991088867
+tt0032164	Zorro's Fighting Legion	495	7.1	The masked hero leads a fighting force to fight a villian who plots the conquest of The Republic of Mexico.	17.222043991088867
+tt0036824	The Fighting Seabees	4110	6.4	During WW2, the U.S. Navy implements a new idea of forming construction battalions that also are fighting units, in case of Japanese attack.	17.222043991088867
+tt0099155	Bloodfist II	860	4.9	Kickboxing champion Jake Raye thought his fighting days were over, until a call from an old friend draws him to the Far East and into the hands of a madman. This time Jake's fighting for ...	17.222043991088867
+tt0945580	Odysseus: Voyage to the Underworld	869	4.2	ODYSSEUS, The Warrior King, has been away from Ithaca for twenty years. The first ten he spent fighting the Trojan War; the last ten he spent fighting to get home. Among his adventures is ...	17.222043991088867
+tt1082601	Fighting	34879	5.6	In New York City, a young counterfeiter is introduced to the world of underground street fighting by a seasoned scam artist, who becomes his manager on the bare-knuckling brawling circuit.	17.222043991088867
+tt1090782	Muay Thai Fighter	806	6.2	Lifelong friends learn the techniques of Muay Thai Fighting. The fighting in the ring reflects the fight for their life, when the highly anticipated fight demonstrates to be their biggest challenge they're prepared to die for one another.	17.222043991088867
+tt2832422	La marche	422	6.2	Inspired from a true story of 1983. The story of a 1000 km peaceful march from Paris to Marseille fighting against racial discrimination and fighting for equality.	17.222043991088867
+tt3912040	Sister Code	446	4.3	After the death of their mother, three foster sisters - the shrewd business woman, the free spirit, and the caregiver - find themselves fighting for their individual dreams and fighting each other in this tale of love, lust, and tragedy.	17.222043991088867
+tt0035767	The Crime Doctor's Strangest Case	436	6.3	The Crime Doctor must prove the innocence of a young man with a reputation for using poison.	16.246723175048828
+tt0038430	Crime Doctor's Man Hunt	387	6.2	The Crime Doctor comes up against a criminal with a dual personality.	16.246723175048828
+tt0050519	The Man in the Raincoat	299	6.5	In the absence of his wife, a clarinet player is induced by a friend to meet a call girl, but arrived after a crime. Perceived by some people leaving the scene of the crime covered by his ...	16.246723175048828
+tt0096183	Strike of the Panther	282	4.7	Jason Blade is a man who can't bring himself to commit fully to his woman, and who spends all his time with a special crime task force taking on assignments to fight crime and right wrong ...	16.246723175048828
+tt0265709	Scenes of the Crime	2130	5.7	A young man about to get married earns extra cash by driving a local mobster, but things go awry when the mobster is killed by a rival crime boss.	16.246723175048828
+tt3923572	The Price of Crime	600	5.9	The rise and fall of a Camorra clan in Naples, told through the eyes of a crime boss and his family. Thirty years of a man's life, thirty years in the history of one of the most beautiful and controversial cities on Earth: Naples.	16.246723175048828
+
+-- search using title
+tconst	primary_title	numvotes	average_rating	plot
+tt0147505	Sinbad: The Battle of the Dark Knights	203	2.2	Young Anthony and his grandfather read a magical book about their ancestor Sinbad and become participants in it. Sinbad and wizard Sage must stop evil wizard Bophisto and his minion Nimbus from obtaining the key to all knowledge.
+tt0468569	The Dark Knight	3049010	9.1	When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
+tt10378660	The Dark Knight: The Ballad of the N Word	160	8.5	NULL
+tt1345836	The Dark Knight Rises	1928856	8.4	Eight years after the Joker's reign of anarchy, Batman, with the help of the enigmatic Catwoman, is forced from his exile to save Gotham City from the brutal guerrilla terrorist Bane.
+tt13468860	Cold Dark Knight	NULL	NULL	NULL
+tt14490204	Gimbago the Dark Knight	NULL	NULL	NULL
+tt19731776	RiffTrax: The Dark Knight	NULL	NULL	NULL
+tt26247330	Ballet's Dark Knight: Sir Kenneth MacMillan	NULL	NULL	NULL
+tt3153806	Masterpiece: Frank Miller's the Dark Knight Returns	75	7.5	NULL
+tt4430982	Batman: The Dark Knight Beyond	NULL	NULL	NULL
+tt4494606	The Dark Knight: Not So Serious	NULL	NULL	NULL
+tt4498364	The Dark Knight: Knightfall - Part One	NULL	NULL	NULL
+tt4504426	The Dark Knight: Knightfall - Part Two	NULL	NULL	NULL
+tt4504908	The Dark Knight: Knightfall - Part Three	NULL	NULL	NULL
+tt4653714	The Dark Knight Falls	12	5.4	NULL
+tt6274696	The Dark Knight Returns: An Epic Fan Film	72	6.7	NULL

@@ -93,7 +93,7 @@ CREATE TABLE principal (
 -- Create user table
 CREATE TABLE user (
   userid VARCHAR(100) PRIMARY KEY,
-  username VARCHAR(100) NOT NULL,
+  username VARCHAR(100) UNIQUE NOT NULL,
   password VARCHAR(100) NOT NULL,
   isAdmin BOOLEAN NOT NULL
 );

@@ -105,7 +105,7 @@ def load_movielens_data() -> dict:
 
 def create_users(id):
     user_id = 'u' + str(id)
-    fake_user_name = Faker().user_name()
+    fake_user_name = Faker().user_name() + user_id
     fake_password = fake_user_name + 'password' +str(random.randint(10, 999))
     return (user_id, fake_user_name, fake_password, False)
 
